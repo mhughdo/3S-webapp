@@ -1,0 +1,87 @@
+name: PublishAndDeploy
+
+on:
+  push:
+
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: 3s-webapp
+  REPOSITORY_OWNER: mhughdo
+
+jobs:
+  push_image:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    outputs:
+      REGISTRY_IMAGE: ${{ steps.env.outputs.REGISTRY_IMAGE }}
+      TAG: ${{ steps.env.outputs.TAG }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set env
+        run: |
+          echo "::set-env name=TAG::$(echo $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')-${{ github.sha }})"
+          echo "::set-env name=REGISTRY_IMAGE::$(echo "ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.IMAGE_NAME }}")"
+
+      - name: Build image
+        run: |
+          docker pull $REGISTRY_IMAGE:latest || true
+          docker build --cache-from $REGISTRY_IMAGE:latest --tag $REGISTRY_IMAGE:$TAG .
+
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: |
+          echo REGISTRY_IMAGE=$REGISTRY_IMAGE
+          echo TAG=$TAG
+          docker push $REGISTRY_IMAGE:$TAG
+
+      - name: Tag latest image
+        run: |
+          docker tag $REGISTRY_IMAGE:$TAG $REGISTRY_IMAGE:latest
+          docker push $REGISTRY_IMAGE:latest
+      - name: Set output
+        id: env
+        run: |
+          echo "::set-output name=REGISTRY_IMAGE::$(echo ${REGISTRY_IMAGE})"
+          echo "::set-output name=TAG::$(echo ${TAG})"
+  deploy:
+     runs-on: ubuntu-latest
+     needs: push_image
+     if: github.event_name == 'push'
+
+     steps:
+      - uses: actions/checkout@v2
+
+      - name: Set the current branch name
+        shell: bash
+        run: echo "::set-env name=BRANCH::${GITHUB_REF#refs/heads/}"
+        id: myref
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v1
+        with:
+          kustomize-version: "3.8.4"
+
+      - name: Update Kubernetes resources
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          cd k8s/base
+          kustomize edit set image ghcr.io/mhughdo/3s-webapp=${{ needs.push_image.outputs.REGISTRY_IMAGE }}:${{ needs.push_image.outputs.TAG }}
+          cat kustomization.yaml
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Update image tag"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
