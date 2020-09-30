@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 3s-webapp
+  name: sans-webapp
 spec:
   selector:
     matchLabels:
-      app: 3s-webapp
+      app: sans-webapp
   template:
     metadata:
       labels:
-        app: 3s-webapp
+        app: sans-webapp
     spec:
       containers:
-        - name: 3s-webapp-image
+        - name: sans-webapp-image
           image: ghcr.io/mhughdo/3s-webapp:latest
           ports:
             - containerPort: 3000
