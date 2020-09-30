@@ -7,4 +7,4 @@ namespace: default
 images:
 - name: ghcr.io/mhughdo/3s-webapp
   newName: ghcr.io/mhughdo/3s-webapp
-  newTag: fix-kustomization-files-type-888af245a9df1758b5ecaaa626cff4c195e63b39
+  newTag: fix-invalid-svc-name-187d551083692d6b116d0ed56d51bfec117fab3b
