@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 3s-webapp
+spec:
+  selector:
+    matchLabels:
+      app: 3s-webapp
+  template:
+    metadata:
+      labels:
+        app: 3s-webapp
+    spec:
+      containers:
+        - name: 3s-webapp-image
+          image: ghcr.io/mhughdo/3s-webapp:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '2Gi'
+              cpu: "2500m"
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: 3s-webapp-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     cert-manager.io/cluster-issuer: letsencrypt-prod
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   tls:
+#     - hosts:
+#         - awm.hughdo.dev
+#         - www.awm.hughdo.dev
+#       secretName: 3s-webapp-tls
+#   rules:
+#     - host: awm.hughdo.dev
+#       http:
+#         paths:
+#           - path: /
+#             backend:
+#               serviceName: 3s-webapp-svc
+#               servicePort: 80
