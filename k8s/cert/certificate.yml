@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: sans-cert
+  namespace: default
+spec:
+  commonName: sans.hughdo.dev
+  secretName: sans-cert
+  dnsNames:
+    - sans.hughdo.dev
+    - www.sans.hughdo.dev
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

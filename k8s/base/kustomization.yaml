@@ -3,8 +3,9 @@ kind: Kustomization
 resources:
 - deployment.yml
 - service.yml
+- ingress-route.yml
 namespace: default
 images:
 - name: ghcr.io/mhughdo/3s-webapp
   newName: ghcr.io/mhughdo/3s-webapp
-  newTag: fix-invalid-svc-name-187d551083692d6b116d0ed56d51bfec117fab3b
+  newTag: ssl-tls-traefik-24a8b23dd45b212864ecae5b8f627fdf2b4cc0d4

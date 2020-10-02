@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: sans-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: sans.hughdo.dev
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: sans-webapp-svc
+          servicePort: 80
+  tls:
+    - hosts:
+      - sans.hughdo.dev
+      - www.sans.hughdo.dev
+      secretName: sans-cert
