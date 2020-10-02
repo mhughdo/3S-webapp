@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - deployment.yml
 - service.yml
+- ingress-route.yml
 namespace: default
 images:
 - name: ghcr.io/mhughdo/3s-webapp
