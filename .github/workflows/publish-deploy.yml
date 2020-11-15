@@ -2,7 +2,7 @@ name: PublishAndDeploy
 
 on:
   push:
-    branches:
+    branches-ignore:
       - "master"
 
 env:
@@ -13,7 +13,7 @@ env:
 jobs:
   push_image:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref != 'refs/heads/master'
 
     outputs:
       REGISTRY_IMAGE: ${{ steps.env.outputs.REGISTRY_IMAGE }}
@@ -24,8 +24,8 @@ jobs:
 
       - name: Set env
         run: |
-          echo "::set-env name=TAG::$(echo $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')-${{ github.sha }})"
-          echo "::set-env name=REGISTRY_IMAGE::$(echo "ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.IMAGE_NAME }}")"
+          echo "TAG=$(echo $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')-${{ github.sha }})" >> $GITHUB_ENV
+          echo "REGISTRY_IMAGE=$(echo "ghcr.io/${{ env.REPOSITORY_OWNER }}/${{ env.IMAGE_NAME }}")" >> $GITHUB_ENV
 
       - name: Build image
         run: |
@@ -53,37 +53,26 @@ jobs:
   deploy:
      runs-on: ubuntu-latest
      needs: push_image
-     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+     if: github.event_name == 'push' && github.ref != 'refs/heads/master'
 
      steps:
       - uses: actions/checkout@v2
 
-      - name: Set the current branch name
-        shell: bash
-        run: echo "::set-env name=BRANCH::${GITHUB_REF#refs/heads/}"
-        id: myref
+      - name: Install doctl
+        run: cd ~ && curl -sL
+          https://github.com/digitalocean/doctl/releases/download/v1.52.0/doctl-1.52.0-linux-amd64.tar.gz | tar -xzv
+      - name: DigitalOcean auth
+        run: ~/doctl auth init -t ${{secrets.DIGITALOCEAN_TOKEN}}
+      - name: Set Kubeconfig
+        run: ~/doctl kubernetes cluster kubeconfig save ${{secrets.CLUSTER_NAME}}
+      - name: Get Kubeconfig
+        run: cat ~/.kube/config
+      - name: Set Image Tag
+        run: sed -i 's|GITHUB_SHA|${{ needs.push_image.outputs.TAG }}|' ./k8s/base/deployment.yml
+      - name: Check yaml file
+        run: grep -E "image" ./k8s/base/deployment.yml
+      - name: Apply yaml file
+        run: kubectl apply -f ./k8s/base/deployment.yml --record
+      - name: Check result
+        run: kubectl get all
 
-      - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v1
-        with:
-          kustomize-version: "3.8.4"
-
-      - name: Update Kubernetes resources
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: |
-          cd k8s/base
-          kustomize edit set image ghcr.io/mhughdo/3s-webapp=${{ needs.push_image.outputs.REGISTRY_IMAGE }}:${{ needs.push_image.outputs.TAG }}
-          cat kustomization.yaml
-
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -am "Update image tag"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
