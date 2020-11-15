@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: sans-webapp-image
-          image: ghcr.io/mhughdo/3s-webapp:gitops-to-nothing-0fdba6e690053fc1ac9dac3e01222b01fab998ba
+          image: ghcr.io/mhughdo/3s-webapp:GITHUB_SHA
           ports:
             - containerPort: 3000
           resources:
