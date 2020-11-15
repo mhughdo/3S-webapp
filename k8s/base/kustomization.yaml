@@ -8,4 +8,4 @@ namespace: default
 images:
 - name: ghcr.io/mhughdo/3s-webapp
   newName: ghcr.io/mhughdo/3s-webapp
-  newTag: ssl-tls-traefik-24a8b23dd45b212864ecae5b8f627fdf2b4cc0d4
+  newTag: master-49a4088ee31d0f76f247e0994f5f9c67d2077433
