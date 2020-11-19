@@ -1,11 +1,11 @@
-FROM node:12-alpine as builder
+FROM node:14-alpine as builder
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY . .
 RUN yarn build
 
-FROM node:12-alpine
+FROM node:14-alpine
 WORKDIR /usr/src/app
 ENV NODE_ENV production
 COPY --from=builder /usr/src/app/package.json  .
