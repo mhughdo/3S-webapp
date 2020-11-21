@@ -47,6 +47,12 @@ const theme = extendTheme({
     80: "20rem",
     96: "24rem",
   },
+  fontWeights: {
+    normal: 400,
+    medium: 500,
+    bold: 700,
+    bolder: 900
+  },
 })
 
 export default theme
