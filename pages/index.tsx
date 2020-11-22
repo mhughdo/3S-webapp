@@ -1,10 +1,13 @@
-import Header from '@/components/Header'
-import { Box, Container } from '@chakra-ui/react'
+import Footer from '@components/Footer'
+import Header from '@components/Header'
+import { Grid, Box } from '@chakra-ui/react'
 
 export default function Home() {
   return (
-    <Container maxWidth='100%'>
+    <Grid templateRows='auto 1fr auto' maxWidth='100%' minH='100vh'>
       <Header />
-    </Container>
+      <Box>Body</Box>
+      <Footer />
+    </Grid>
   )
 }

@@ -1,5 +1,5 @@
 import { Box, Container, Link, Input } from '@chakra-ui/react'
-import Logo from '@/assets/logo2.png'
+import Logo from '@assets/logo2.png'
 import Image from 'next/image'
 import SearchIcon from '../assets/svg/search.svg'
 
@@ -55,7 +55,7 @@ const HeaderComponent = () => (
           </Box>
           <Box ml={4} d='inline-block'>
             <Link
-              href='/host'
+              href='/signup'
               fontSize='0.9rem'
               fontWeight='700'
               textDecoration='none !important'
@@ -65,7 +65,7 @@ const HeaderComponent = () => (
           </Box>
           <Box ml={4} d='inline-block'>
             <Link
-              href='/host'
+              href='/login'
               fontSize='0.9rem'
               fontWeight='700'
               textDecoration='none !important'

@@ -112,6 +112,7 @@ module.exports = {
         proseWrap: 'always',
       },
     ],
+    "import/no-unresolved": 0,
     'semi': 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-explicit-any": 0,
