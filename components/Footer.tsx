@@ -10,7 +10,7 @@ import HuaweiStore from '../assets/svg/huawei.svg'
 import Copyright from './Copyright'
 
 const FooterComponent = () => (
-  <Box alignSelf='end'>
+  <Box alignSelf='end' py={12}>
     <Box py={12}>
       <Container maxW='calc(1296px + 5.6rem)' px={10}>
         <Grid templateColumns='repeat(4, 1fr)'>
