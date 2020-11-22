@@ -7,6 +7,7 @@ import '../theme/font.css'
 import 'leaflet/dist/leaflet.css'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import '../assets/styles/pagination.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
