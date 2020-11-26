@@ -11,7 +11,7 @@ const theme = extendTheme({
       }
     },
   },
-  space: {
+space: {
     px: "1px",
     0: "0",
     0.5: "0.125rem",
@@ -48,6 +48,7 @@ const theme = extendTheme({
     96: "24rem",
   },
   fontWeights: {
+    ...defaultTheme.fontWeights,
     normal: 400,
     medium: 500,
     bold: 700,
