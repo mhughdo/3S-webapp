@@ -154,6 +154,8 @@ module.exports = {
     "@typescript-eslint/no-unsafe-assignment": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "react/jsx-props-no-spreading": 0,
+    "@typescript-eslint/no-unsafe-call": 1,
+    "react/prop-types": 0,
   },
   plugins: ['html', 'prettier', 'react-hooks', '@typescript-eslint'],
 };
