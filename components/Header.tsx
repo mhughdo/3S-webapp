@@ -67,7 +67,7 @@ const HeaderComponent = () => (
             </Box>
             <Box ml={4} d='inline-block'>
               <Link
-                href='/login'
+                href='/signin'
                 fontSize='0.9rem'
                 fontWeight='700'
                 textDecoration='none !important'
