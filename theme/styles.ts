@@ -53,7 +53,7 @@ space: {
     medium: 500,
     semibold: 600,
     bold: 700,
-    bolder: 900
+    bolder: 900,
   },
 })
 
