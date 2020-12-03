@@ -23,6 +23,9 @@ spec:
             limits:
               memory: '2Gi'
               cpu: "2500m"
+          env:
+            - name: NEXTAUTH_URL
+              value: 'https://sans.hughdo.dev'
 # ---
 # apiVersion: extensions/v1beta1
 # kind: Ingress
