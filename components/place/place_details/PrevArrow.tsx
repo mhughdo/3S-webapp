@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 const PrevArrow = (props) => {
+  // eslint-disable-next-line react/prop-types
   const { onClick } = props
   return (
     <Box
