@@ -1,7 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import Header from '@components/Header'
 import { useState } from 'react'
-import { EmailIcon } from '@chakra-ui/icons'
+import { EmailIcon, WarningIcon } from '@chakra-ui/icons'
 import Copyright from '@components/Copyright'
 import {
   Grid,
@@ -15,6 +15,8 @@ import {
   Button,
   Link,
   useToast,
+  Alert,
+  AlertTitle,
 } from '@chakra-ui/react'
 import MediaBox from '@components/signin/MediaBox'
 import { signIn } from 'next-auth/client'
@@ -23,6 +25,7 @@ import TopSales from '@assets/signin/top-sales.png'
 import Wallet from '@assets/signin/wallet.png'
 import BackPack from '@assets/signin/backpack.png'
 import { isValidEmail } from '@utils/validation'
+import { useRouter } from 'next/router'
 
 export default function SignIn() {
   const toast = useToast()
@@ -30,6 +33,9 @@ export default function SignIn() {
   const handleShowPassword = () => setShowPassword(!showPassword)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
+  const { query } = router
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -53,6 +59,8 @@ export default function SignIn() {
         isClosable: true,
       })
     }
+
+    setLoading(true)
 
     signIn('credentials', { email, password, callbackUrl: '/' })
   }
@@ -115,6 +123,12 @@ export default function SignIn() {
                 <Text fontWeight='bold' mb={4}>
                   Đăng nhập 3S để trải nghiệm
                 </Text>
+                {query?.error === 'CredentialsSignin' && (
+                  <Alert status='error'>
+                    <WarningIcon sx={{ color: 'red !important', mr: 2 }} />
+                    <AlertTitle mr={2}>Sai tên đăng nhập hoặc mật khẩu!</AlertTitle>
+                  </Alert>
+                )}
                 <InputGroup mt={8} size='lg'>
                   <Input
                     type='email'
@@ -162,6 +176,7 @@ export default function SignIn() {
                   backgroundSize='200% auto'
                   height='3.5rem'
                   onClick={handleLogin}
+                  disabled={loading}
                   _disabled={{ opacity: 0.5 }}
                   _hover={{
                     backgroundPosition: '100%',
