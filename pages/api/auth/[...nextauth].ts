@@ -55,7 +55,15 @@ const options: InitOptions = {
      * @return {object}              Session that will be returned to the client
      */
     session: async (session: any, user: any) => {
-      session.token = user?.full_info.token
+      const fullInfo = user?.full_info
+
+      if (fullInfo?.token) {
+        session.token = fullInfo.token
+        delete fullInfo.token
+      }
+
+      session.full_info = fullInfo
+
       return Promise.resolve(session)
     },
     jwt: async (token, user, account, profile, isNewUser) => {

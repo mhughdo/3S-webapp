@@ -4,7 +4,6 @@ import {
   Input,
   Link,
   Menu,
-  Image as ChakraImage,
   MenuButton,
   MenuItem,
   MenuList,
