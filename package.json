@@ -26,6 +26,7 @@
     "react-icons": "^3.11.0",
     "react-leaflet": "^3.0.2",
     "react-paginate": "^6.5.0",
+    "react-query": "^2.26.4",
     "react-scroll": "^1.8.1",
     "react-slick": "^0.27.13",
     "sass": "^1.29.0",
