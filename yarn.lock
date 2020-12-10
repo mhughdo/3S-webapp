@@ -148,7 +148,7 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@7.12.5", "@babel/runtime@^7.0.0", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.7.2":
+"@babel/runtime@7.12.5", "@babel/runtime@^7.0.0", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2":
   version "7.12.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
@@ -5945,6 +5945,13 @@ react-portal@^4.2.0:
   integrity sha512-fE9kOBagwmTXZ3YGRYb4gcMy+kSA+yLO0xnPankjRlfBv4uCpFXqKPfkpsGQQR15wkZ9EssnvTOl1yMzbkxhPQ==
   dependencies:
     prop-types "^15.5.8"
+
+react-query@^2.26.4:
+  version "2.26.4"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.26.4.tgz#18239b4c0b61d0b744f0d4a91f566b294fa9f752"
+  integrity sha512-sXGG0gh1ah11AcfptYOCRpGDoYMnssq6riQUpQaLSM2EOodVkexp3zNLk1MFDgfRGuXQst40Tnu17oNwni66aA==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
 
 react-refresh@0.8.3:
   version "0.8.3"
