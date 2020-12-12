@@ -26,6 +26,22 @@ spec:
           env:
             - name: NEXTAUTH_URL
               value: 'https://sans.hughdo.dev'
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: sans-aws-secret
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sans-aws-secret
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: sans-aws-secret
+                  key: S3_BUCKET
+
 # ---
 # apiVersion: extensions/v1beta1
 # kind: Ingress
