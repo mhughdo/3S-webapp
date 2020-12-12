@@ -7,7 +7,7 @@ import Filter from '@components/filter/Filter'
 const CityDetail = () => (
   <Box>
     <Header />
-    <Box py={3}>
+    <Box px={38} py={4}>
       <Filter />
       <RoomList />
     </Box>

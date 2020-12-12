@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable camelcase */
 /* eslint-disable no-shadow */
@@ -27,8 +28,7 @@ import Place2 from '@assets/places/2.jpg'
 import Place3 from '@assets/places/3.jpg'
 import Place4 from '@assets/places/4.jpg'
 import Place5 from '@assets/places/5.png'
-import { useQuery } from 'react-query'
-import axios from '@utils/axios'
+import usePlacesByCityData from '@hooks/usePlacesByCityData'
 import TopDestinationBox from './TopDestinationBox'
 import ServiceBox from './ServiceBox'
 import HomeSectionHeader from './HomeSectionHeader'
@@ -40,6 +40,7 @@ type PlacesByCity = {
   city: string
   address: string
   detail: string
+  image: string
   name: string
   place_type: string
   user_id: number
@@ -51,18 +52,7 @@ const Home = () => {
     isLoading,
     isError,
     data: { data } = {} as any,
-  }: { isLoading: boolean; isError: boolean; data: { data: PlacesByCity } } = useQuery(
-    ['placesByCity', 'hanoi'],
-    async (_, city: string) => {
-      const { data } = await axios({
-        method: 'GET',
-        url: `/v1/place/city/${city}`,
-      })
-
-      return data
-    },
-    { retry: false }
-  )
+  }: { isLoading: boolean; isError: boolean; data: { data: PlacesByCity } } = usePlacesByCityData({ city: 'hanoi' })
 
   if (isError) {
     toast({
@@ -148,14 +138,14 @@ const Home = () => {
               description='Cùng 3S bắt đầu chuyến hành trình chinh phục thế giới của bạn'
             />
             <Slider infinite speed={500} slidesToShow={5} slidesToScroll={5}>
-              <TopDestinationBox name='Hà Nội' placeCount={3207} imageUrl={Hanoi} />
-              <TopDestinationBox name='TP.Hồ Chí Minh' placeCount={3246} imageUrl={HCM} />
-              <TopDestinationBox name='Vũng Tàu' placeCount={846} imageUrl={Vungtau} />
-              <TopDestinationBox name='Đà Lạt' placeCount={2119} imageUrl={Dalat} />
-              <TopDestinationBox name='Đà Nẵng' placeCount={1661} imageUrl={Danang} />
-              <TopDestinationBox name='Nha Trang' placeCount={980} imageUrl={Nhatrang} />
-              <TopDestinationBox name='Quảng Ninh' placeCount={392} imageUrl={QuangNinh} />
-              <TopDestinationBox name='Hội An' placeCount={456} imageUrl={Hoian} />
+              <TopDestinationBox name='Hà Nội' url='hanoi' placeCount={3207} imageUrl={Hanoi} />
+              <TopDestinationBox name='TP.Hồ Chí Minh' url='hcm' placeCount={3246} imageUrl={HCM} />
+              <TopDestinationBox name='Vũng Tàu' url='vungtau' placeCount={846} imageUrl={Vungtau} />
+              <TopDestinationBox name='Đà Lạt' url='dalat' placeCount={2119} imageUrl={Dalat} />
+              <TopDestinationBox name='Đà Nẵng' url='danang' placeCount={1661} imageUrl={Danang} />
+              <TopDestinationBox name='Nha Trang' url='nhatrang' placeCount={980} imageUrl={Nhatrang} />
+              <TopDestinationBox name='Quảng Ninh' url='quangninh' placeCount={392} imageUrl={QuangNinh} />
+              <TopDestinationBox name='Hội An' url='hoian' placeCount={456} imageUrl={Hoian} />
             </Slider>
           </Box>
           <Box mt={12}>
@@ -241,7 +231,7 @@ const Home = () => {
             <Slider infinite speed={500} slidesToShow={4} slidesToScroll={4}>
               {data?.length
                 ? data.map((place) => (
-                    <PlaceBox key={place.id} name={place.name} address={place.address} imageUrl={Place1} />
+                    <PlaceBox key={place.id} imageUrl={place.image} name={place.name} address={place.address} />
                   ))
                 : !isLoading &&
                   !data?.length && (
