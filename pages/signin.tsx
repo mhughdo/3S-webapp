@@ -1,5 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import Header from '@components/Header'
+import NextLink from 'next/link'
 import { useState } from 'react'
 import { EmailIcon, WarningIcon } from '@chakra-ui/icons'
 import Copyright from '@components/Copyright'
@@ -196,13 +197,15 @@ export default function SignIn() {
                   </Box>
                   <Box mt={8}>
                     Bạn chưa có tài khoản 3S?{' '}
-                    <Link
-                      href='signup'
-                      color='orange.600'
-                      textDecoration='none'
-                      _hover={{ textDecoration: 'none', color: 'black' }}>
-                      Đăng ký
-                    </Link>
+                    <NextLink href='/signup'>
+                      <Link
+                        href='signup'
+                        color='orange.600'
+                        textDecoration='none'
+                        _hover={{ textDecoration: 'none', color: 'black' }}>
+                        Đăng ký
+                      </Link>
+                    </NextLink>
                   </Box>
                 </Box>
               </Box>
