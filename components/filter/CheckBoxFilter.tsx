@@ -52,7 +52,12 @@ const CheckBox = ({
   return (
     <Popover onClose={onLoadData_}>
       <PopoverTrigger>
-        <Button size='sm' mx={1} colorScheme={checkedQuantity > 0 ? 'teal' : 'gray'} onClick={initValue}>
+        <Button
+          size='sm'
+          mx={1}
+          color={checkedQuantity > 0 ? 'white' : 'black'}
+          backgroundColor={checkedQuantity > 0 ? '#f65e39' : 'gray'}
+          onClick={initValue}>
           {title}
           {checkedQuantity > 0 ? ` - ${checkedQuantity}` : ''}
         </Button>
@@ -62,18 +67,14 @@ const CheckBox = ({
         <PopoverBody>
           <Stack direction='column'>
             {valueList.map((item) => (
-              <Checkbox
-                colorScheme='teal'
-                size='md'
-                value={item.value}
-                onChange={(event) => onChange(event.target.value)}>
+              <Checkbox size='md' value={item.value} onChange={(event) => onChange(event.target.value)}>
                 {item.name}
               </Checkbox>
             ))}
           </Stack>
         </PopoverBody>
         <PopoverFooter>
-          <Button colorScheme='teal' size='sm' onClick={onLoadData_}>
+          <Button pt={1} backgroundColor='#f65e39' size='sm' color='white' onClick={onLoadData_}>
             Áp dụng
           </Button>
         </PopoverFooter>

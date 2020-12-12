@@ -54,7 +54,7 @@ const SliderFilter = ({
   return (
     <Popover onClose={onLoadData_}>
       <PopoverTrigger>
-        <Button size='sm' mx={1} colorScheme={isChecked ? 'teal' : 'gray'}>
+        <Button size='sm' mx={1} backgroundColor={isChecked ? '#f65e39' : 'gray'} color={isChecked ? 'white' : 'black'}>
           {isChecked ? `${value[0]} - ${value[1]} VND` : `${title}`}
         </Button>
       </PopoverTrigger>
@@ -83,7 +83,7 @@ const SliderFilter = ({
           </Flex>
         </PopoverBody>
         <PopoverFooter>
-          <Button colorScheme='teal' size='sm' onClick={onLoadData_}>
+          <Button backgroundColor='#f65e39' size='sm' color='white' onClick={onLoadData_}>
             Áp dụng
           </Button>
         </PopoverFooter>

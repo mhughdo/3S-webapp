@@ -9,7 +9,12 @@ const ButtonFilter = ({ title, onLoadData, name }: { title: string; onLoadData: 
     onLoadData({ [name]: isChecked })
   }
   return (
-    <Button size='sm' mx={1} colorScheme={isChecked ? 'teal' : 'gray'} onClick={onClick}>
+    <Button
+      size='sm'
+      mx={1}
+      backgroundColor={isChecked ? '#f65e39' : 'gray'}
+      color={isChecked ? 'white' : 'black'}
+      onClick={onClick}>
       {title}
     </Button>
   )
