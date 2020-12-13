@@ -5,8 +5,10 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Container, Grid, useToast, Box, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import usePlacesByCityData from '@hooks/usePlacesByCityData'
+import useTotalPlacesByCityData from '@hooks/useTotalPlacesByCityData'
 import ReactPaginate from 'react-paginate'
+import { useState } from 'react'
+import usePlacesByCityData from '@hooks/usePlacesByCityData'
 import RoomItem from './RoomItem'
 
 type PriceType = {
@@ -24,6 +26,8 @@ type RoomItemType = {
 }[]
 
 const RoomList = () => {
+  const [page, setPage] = useState(0)
+
   const toast = useToast()
 
   const router = useRouter()
@@ -53,12 +57,17 @@ const RoomList = () => {
     }
   }
 
-  const {
-    isLoading,
-    isError,
-    data: { data } = {} as any,
-  }: { isLoading: boolean; isError: boolean; data: { data: RoomItemType } } = usePlacesByCityData({
+  const { data: { data: totalPlaces } = {} as any }: { data: { data: number } } = useTotalPlacesByCityData({
     city: id,
+  })
+
+  const {
+    isFetching,
+    isError,
+    latestData: { data: roomList } = {} as any,
+  }: { isFetching: boolean; isError: boolean; latestData: { data: RoomItemType } } = usePlacesByCityData({
+    city: id,
+    page,
   })
 
   if (isError) {
@@ -72,16 +81,20 @@ const RoomList = () => {
     })
   }
 
-  const onPageChange = () => 0
+  const handlePageClick = (data: any) => {
+    const { selected } = data
+    setPage(selected)
+  }
 
   return (
     <Container maxW='100%' px='0' mt={32}>
       <Text fontWeight='bolder' fontSize={28} as='h2' mt={3} mb={8}>
-        {data?.length} địa điểm tại {convertIdToCity(id)}
+        {totalPlaces} địa điểm tại {convertIdToCity(id)}
       </Text>
       <Grid templateColumns='repeat(5, 1fr)' rowGap={5} columnGap={3}>
-        {data?.length &&
-          data.map((place) => (
+        {!isFetching &&
+          roomList?.length &&
+          roomList.map((place) => (
             <RoomItem
               key={place.id}
               placeId={place.id}
@@ -92,17 +105,17 @@ const RoomList = () => {
               image={place.image}
             />
           ))}
-        {isLoading && Array.from({ length: 10 }).map((_: any, index: number) => <RoomItem key={index} isLoading />)}
+        {isFetching && Array.from({ length: 20 }).map((_: any, index: number) => <RoomItem key={index} isLoading />)}
       </Grid>
       <ReactPaginate
         previousLabel='<'
         nextLabel='>'
         breakLabel='...'
         breakClassName='break-me'
-        pageCount={10}
+        pageCount={Math.ceil(totalPlaces / 20)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
-        onPageChange={onPageChange}
+        onPageChange={handlePageClick}
         containerClassName='paginate-wrap'
         subContainerClassName='paginate-inner'
         pageClassName='paginate-li'
