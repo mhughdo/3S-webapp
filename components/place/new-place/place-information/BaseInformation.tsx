@@ -59,7 +59,7 @@ const BaseInformation = ({
         <FormControl id='place_name' isRequired mb={5}>
           <FormLabel>Tên chỗ nghỉ</FormLabel>
           <Input
-            placeholder='Tên chỗ nghỉ'
+            placeholder='Tên chỗ nghỉ (Ít nhất 6 ký tự)'
             value={placeName}
             onChange={(event) => {
               setPlaceName(event.target.value)

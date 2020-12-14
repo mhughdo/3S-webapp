@@ -162,7 +162,7 @@ const PlaceImage = ({
             </Button>
           </FormControl>
           <FormControl id='overview_image' isRequired mb={5}>
-            <FormLabel>Ảnh chỗ nghỉ:</FormLabel>
+            <FormLabel>Ảnh chỗ nghỉ (Ít nhất 8 ảnh):</FormLabel>
             <Flex flexWrap='wrap'>
               {uploadedOverviewImages.map((item, index) => (
                 <Image src={item} width='21.5%' key={index} mr={5} mb={5} />
