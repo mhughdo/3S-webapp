@@ -219,7 +219,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
                     </Box>
                   </Box>
                 )}
-                {!bookingSuccess ? (
+                {bookingSuccess ? (
                   <Box mb={7}>
                     <Box mb={7}>
                       <Alert
