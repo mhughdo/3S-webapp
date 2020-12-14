@@ -8,7 +8,6 @@ import Header from '@components/Header'
 import PlaceInformation from '@components/place/new-place/place-information/PlaceInformation'
 import PlaceImage from '@components/place/new-place/place-image/PlaceImage'
 import PricePolicy from '@components/place/new-place/price-policy/PricePolicy'
-import 'react-step-progress/dist/index.css'
 import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css';
 import { Steps } from 'antd';
