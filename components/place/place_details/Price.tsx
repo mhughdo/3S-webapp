@@ -1,7 +1,8 @@
 import { Box, chakra, Heading, Text } from '@chakra-ui/react'
 import { Element } from 'react-scroll'
+import { AmountFormat } from '@utils/amountFormat'
 
-const Price = () => {
+const Price = ({ price }) => {
   const NavLabel = chakra(Element)
 
   return (
@@ -21,11 +22,11 @@ const Price = () => {
           backgroundColor='#f6f6f6'
           color='#333'>
           <Text>Thứ hai - Thứ sáu</Text>
-          <Text fontWeight='bold'>491,200₫</Text>
+          <Text fontWeight='bold'>{AmountFormat(price?.normal_day_price)}₫</Text>
         </Box>
         <Box display='flex' flexDirection='row' justifyContent='space-between' padding='12px 18px' color='#333'>
           <Text>Thứ bảy - Chủ Nhật</Text>
-          <Text fontWeight='bold'>500,200₫</Text>
+          <Text fontWeight='bold'>{AmountFormat(price?.weekend_price)}₫</Text>
         </Box>
       </Box>
     </NavLabel>

@@ -4,6 +4,7 @@ import { Box, Image, Text, Stack, Skeleton } from '@chakra-ui/react'
 import { AiFillStar } from 'react-icons/ai'
 import { FaRegHeart } from 'react-icons/fa'
 import NextLink from 'next/link'
+import { AmountFormat } from '@utils/amountFormat'
 
 type SkeletonProps = { isLoading: true }
 
@@ -120,7 +121,7 @@ function RoomItem({
             <Skeleton mt={2} width='30%' height={3} />
           ) : (
             <Stack mt={2} direction='row' spacing={3} fontSize={14}>
-              <Text fontWeight='bolder'>{price}₫/đêm</Text>
+              <Text fontWeight='bolder'>{AmountFormat(price)}₫/đêm</Text>
             </Stack>
           )}
         </Box>
