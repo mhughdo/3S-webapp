@@ -1,0 +1,19 @@
+.primaryBtnClass {
+  background-color: orange !important;
+  padding: 5px 15px !important;
+  font-weight: bold !important;
+}
+.secondaryBtnClass {
+  padding: 5px 15px !important;
+}
+.buttonWrapperClass {
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex !important;
+  justify-content: flex-start !important;
+  padding: 15px 0;
+  border-top: 1px solid #e0dede;
+}
