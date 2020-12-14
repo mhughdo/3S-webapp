@@ -59,7 +59,6 @@ const options: InitOptions = {
 
       if (fullInfo?.token) {
         session.token = fullInfo.token
-        delete fullInfo.token
       }
 
       session.full_info = fullInfo

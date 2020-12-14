@@ -46,7 +46,6 @@ function PlaceBox({
         </Box>
 
         <Box as='h5' fontSize='sm' color='black' fontWeight='bold' isTruncated>
-          {/* {`${new Intl.NumberFormat().format(price)}đ/đêm`} */}
           {isLoading ? <Skeleton mt={1} height='12px' width='120px' /> : address}
         </Box>
       </Link>
