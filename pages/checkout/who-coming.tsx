@@ -43,6 +43,7 @@ import { isValidDate } from 'utils/validation'
 import differenceInDays from 'date-fns/differenceInDays'
 import { toDateString, dayOfWeek, calculateRoomPrice, formatPrice } from 'utils'
 import format from 'date-fns/format'
+import isEqual from 'date-fns/isEqual'
 import Marker from '../../assets/svg/marker.svg'
 
 const HR = chakra('hr')
@@ -76,6 +77,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
     isError ||
     Number.isNaN(guests) ||
     guests > 4 ||
+    isEqual(checkIn, checkOut) ||
     !isValidDate(checkIn) ||
     !isValidDate(checkOut) ||
     checkIn > checkOut ||
@@ -209,7 +211,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
                           Hãy đăng nhập vào 3S ngay để đặt phòng.
                         </Box>
                         <NextLink href='/signin'>
-                          <Link href='/signin'>
+                          <Link href='/signin' _hover={{ textDecoration: 'none' }}>
                             <Button colorScheme='orange'>Đăng nhập ngay</Button>
                           </Link>
                         </NextLink>
@@ -217,7 +219,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
                     </Box>
                   </Box>
                 )}
-                {bookingSuccess ? (
+                {!bookingSuccess ? (
                   <Box mb={7}>
                     <Box mb={7}>
                       <Alert
@@ -238,7 +240,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
                         </AlertDescription>
                         <Box my={4}>
                           <NextLink href='/me/bookings'>
-                            <Link href='/me/bookings'>
+                            <Link href='/me/bookings' _hover={{ textDecoration: 'none' }}>
                               <Button colorScheme='orange'>Quản lý đặt chỗ</Button>
                             </Link>
                           </NextLink>
