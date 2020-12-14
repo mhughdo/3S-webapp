@@ -7,16 +7,18 @@ const BaseInformation = ({
   completeTab,
   syncPlaceName,
   syncPlaceType,
+  data,
 }: {
   completeTab: Function
   syncPlaceName: Function
   syncPlaceType: Function
+  data: any
 }) => {
-  const [placeName, setPlaceName] = useState('')
-  const [placeType, setPlaceType] = useState('')
+  const [placeName, setPlaceName] = useState(data.name)
+  const [placeType, setPlaceType] = useState(data.place_type)
 
   useEffect(() => {
-    if (placeName === '' || placeType === '') {
+    if (placeName === '' || placeType === '' || placeName.length < 6) {
       completeTab(false)
     } else {
       syncPlaceName(placeName)
@@ -26,7 +28,7 @@ const BaseInformation = ({
   }, [placeName, placeType, completeTab, syncPlaceName, syncPlaceType])
 
   return (
-    <Flex mb={10}>
+    <Flex>
       <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
         <Box borderBottomColor='gray.200' borderBottomWidth={1} mb={5} pb={3}>
           <Text fontSize='xl' fontWeight='bold'>

@@ -7,13 +7,15 @@ const Position = ({
   completeTab,
   syncCity,
   syncAddress,
+  data,
 }: {
   completeTab: Function
   syncCity: Function
   syncAddress: Function
+  data: any
 }) => {
-  const [city, setCity] = useState('')
-  const [address, setAddress] = useState('')
+  const [city, setCity] = useState(data.city)
+  const [address, setAddress] = useState(data.address)
 
   useEffect(() => {
     if (city === '' || address === '') {
@@ -26,7 +28,7 @@ const Position = ({
   }, [city, address, completeTab, syncCity, syncAddress])
 
   return (
-    <Flex mb={10}>
+    <Flex>
       <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
         <Box borderBottomColor='gray.200' borderBottomWidth={1} mb={5} pb={3}>
           <Text fontSize='xl' fontWeight='bold'>
@@ -35,7 +37,7 @@ const Position = ({
         </Box>
         <FormControl id='city' isRequired mb={5}>
           <FormLabel>Thành phố:</FormLabel>
-          <Select placeholder='Thành phố' onChange={(event) => setCity(event.target.value)}>
+          <Select placeholder='Thành phố' onChange={(event) => setCity(event.target.value)} value={city}>
             <option value='hanoi'>Hà Nội</option>
             <option value='hcm'>TP. Hồ Chí Minh</option>
             <option value='vungtau'>Vũng Tàu</option>
@@ -48,7 +50,7 @@ const Position = ({
         </FormControl>
         <FormControl id='address-detail' isRequired mb={5}>
           <FormLabel>Địa chỉ chi tiết</FormLabel>
-          <Input placeholder='Địa chỉ chi tiết' onChange={(event) => setAddress(event.target.value)} />
+          <Input placeholder='Địa chỉ chi tiết' onChange={(event) => setAddress(event.target.value)} value={address} />
         </FormControl>
       </Box>
       <Spacer />

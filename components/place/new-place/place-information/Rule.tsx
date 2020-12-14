@@ -2,12 +2,12 @@
 import { Box, FormControl, FormLabel, Textarea, Text, Flex, RadioGroup, Stack, Radio } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Function }) => {
-  const [smoking, setSmoking] = useState('unallowed')
-  const [pet, setPet] = useState('allowed')
-  const [party, setParty] = useState('allowed')
-  const [cooking, setCooking] = useState('allowed')
-  const [specialRule, setSpecialRule] = useState('')
+const Rule = ({ completeTab, syncRule, data }: { completeTab: Function; syncRule: Function; data: any }) => {
+  const [smoking, setSmoking] = useState(data.smoking)
+  const [pet, setPet] = useState(data.pet)
+  const [party, setParty] = useState(data.party)
+  const [cooking, setCooking] = useState(data.cooking)
+  const [specialRule, setSpecialRule] = useState(data.special_rules)
 
   useEffect(() => {
     syncRule({
@@ -34,7 +34,8 @@ const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Func
             defaultValue='unallowed'
             onChange={(value: string) => {
               setSmoking(value)
-            }}>
+            }}
+            value={smoking}>
             <Stack direction='row'>
               <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
@@ -51,7 +52,8 @@ const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Func
             defaultValue='allowed'
             onChange={(value: string) => {
               setPet(value)
-            }}>
+            }}
+            value={pet}>
             <Stack direction='row'>
               <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
@@ -68,7 +70,8 @@ const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Func
             defaultValue='allowed'
             onChange={(value: string) => {
               setParty(value)
-            }}>
+            }}
+            value={party}>
             <Stack direction='row'>
               <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
@@ -85,7 +88,8 @@ const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Func
             defaultValue='allowed'
             onChange={(value: string) => {
               setCooking(value)
-            }}>
+            }}
+            value={cooking}>
             <Stack direction='row'>
               <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
@@ -103,6 +107,7 @@ const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Func
             onChange={(event) => {
               setSpecialRule(event.target.value)
             }}
+            value={specialRule}
           />
         </FormControl>
       </Box>

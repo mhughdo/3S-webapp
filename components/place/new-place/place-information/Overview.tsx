@@ -3,12 +3,24 @@ import { Box, Textarea, FormControl, FormLabel, Text, Flex, Spacer } from '@chak
 import { useEffect, useState } from 'react'
 import InfoBox from '../InfoBox'
 
-const Overview = ({ completeTab, syncOverview }: { completeTab: Function; syncOverview: Function }) => {
-  const [overview, setOverview] = useState('')
+const Overview = ({
+  completeTab,
+  syncOverview,
+  data,
+}: {
+  completeTab: Function
+  syncOverview: Function
+  data: any
+}) => {
+  const [overview, setOverview] = useState(data.details)
 
   useEffect(() => {
-    syncOverview(overview)
-    completeTab(true)
+    if (overview !== '') {
+      syncOverview(overview)
+      completeTab(true)
+    } else {
+      completeTab(false)
+    }
   }, [completeTab, overview, syncOverview])
 
   return (
@@ -22,13 +34,14 @@ const Overview = ({ completeTab, syncOverview }: { completeTab: Function; syncOv
             Chia sẻ với khách hàng một vài thông tin ngắn gọn và nổi bật về chỗ nghỉ này của bạn.
           </Text>
         </Box>
-        <FormControl id='overview' mb={5}>
+        <FormControl id='overview' mb={5} isRequired>
           <FormLabel>Tổng quan</FormLabel>
           <Textarea
             placeholder='Tổng quan về chỗ nghỉ của bạn'
             onChange={(event) => {
               setOverview(event.target.value)
             }}
+            value={overview}
           />
         </FormControl>
       </Box>

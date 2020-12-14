@@ -1,16 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Box, Text, Flex, Checkbox } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; syncFacilities: Function }) => {
-  const [hasTV, setHasTV] = useState(false)
-  const [hasWifi, setHasWifi] = useState(false)
-  const [hasConditioner, setHasConditioner] = useState(false)
-  const [hasWashingMachine, setHasWashingMachine] = useState(false)
-  const [hasBalcony, setHasBalcony] = useState(false)
-  const [hasMicrowave, setHasMicrowave] = useState(false)
-  const [hasFridge, setHasFridge] = useState(false)
-  const [hasSofa, setHasSofa] = useState(false)
+const Facility = ({
+  completeTab,
+  syncFacilities,
+  data,
+}: {
+  completeTab: Function
+  syncFacilities: Function
+  data: any
+}) => {
+  const initData = (id: number) => {
+    const index = data.findIndex((item) => item.facility_id === id)
+    if (index !== -1) {
+      return true
+    }
+    return false
+  }
+
+  const [hasTV, setHasTV] = useState(initData(2))
+  const [hasWifi, setHasWifi] = useState(initData(1))
+  const [hasConditioner, setHasConditioner] = useState(initData(3))
+  const [hasWashingMachine, setHasWashingMachine] = useState(initData(4))
+  const [hasBalcony, setHasBalcony] = useState(initData(7))
+  const [hasMicrowave, setHasMicrowave] = useState(initData(5))
+  const [hasFridge, setHasFridge] = useState(initData(6))
+  const [hasSofa, setHasSofa] = useState(initData(8))
 
   useEffect(() => {
     const facilities = []
@@ -22,6 +40,7 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
     if (hasFridge) facilities.push({ facility_id: 6 })
     if (hasBalcony) facilities.push({ facility_id: 7 })
     if (hasSofa) facilities.push({ facility_id: 8 })
+    syncFacilities([])
     syncFacilities(facilities)
     completeTab(true)
   }, [
@@ -56,7 +75,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasWifi(event.target.checked)
-              }}>
+              }}
+              isChecked={hasWifi}>
               Wifi
             </Checkbox>
             <Checkbox
@@ -65,7 +85,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasTV(event.target.checked)
-              }}>
+              }}
+              isChecked={hasTV}>
               TV
             </Checkbox>
             <Checkbox
@@ -74,7 +95,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasConditioner(event.target.checked)
-              }}>
+              }}
+              isChecked={hasConditioner}>
               Điều hoà
             </Checkbox>
             <Checkbox
@@ -83,7 +105,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasWashingMachine(event.target.checked)
-              }}>
+              }}
+              isChecked={hasWashingMachine}>
               Máy giặt
             </Checkbox>
           </Flex>
@@ -94,7 +117,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasMicrowave(event.target.checked)
-              }}>
+              }}
+              isChecked={hasMicrowave}>
               Lò vi sóng
             </Checkbox>
             <Checkbox
@@ -103,7 +127,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasFridge(event.target.checked)
-              }}>
+              }}
+              isChecked={hasFridge}>
               Tủ lạnh
             </Checkbox>
             <Checkbox
@@ -112,7 +137,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasBalcony(event.target.checked)
-              }}>
+              }}
+              isChecked={hasBalcony}>
               Ban công
             </Checkbox>
             <Checkbox
@@ -121,7 +147,8 @@ const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; sync
               mb={3}
               onChange={(event) => {
                 setHasSofa(event.target.checked)
-              }}>
+              }}
+              isChecked={hasSofa}>
               Ghế sofa
             </Checkbox>
           </Flex>

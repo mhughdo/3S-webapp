@@ -14,12 +14,12 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Function }) => {
-  const [square, setSquare] = useState(15)
-  const [numOfBedRoom, setNumOfBedRoom] = useState(1)
-  const [numOfBed, setNumOfBed] = useState(1)
-  const [numOfBathRoom, setNumOfBathRoom] = useState(1)
-  const [numOfKitchen, setNumOfKitchen] = useState(1)
+const Room = ({ completeTab, syncRoom, data }: { completeTab: Function; syncRoom: Function; data: any }) => {
+  const [square, setSquare] = useState(data.square)
+  const [numOfBedRoom, setNumOfBedRoom] = useState(data.num_of_bedroom)
+  const [numOfBed, setNumOfBed] = useState(data.num_of_bed)
+  const [numOfBathRoom, setNumOfBathRoom] = useState(data.num_of_bathroom)
+  const [numOfKitchen, setNumOfKitchen] = useState(data.num_of_kitchen)
 
   useEffect(() => {
     syncRoom({
@@ -42,7 +42,13 @@ const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Func
         </Box>
         <FormControl id='square' isRequired mb={5}>
           <FormLabel>Diện tích chỗ nghỉ của bạn là: </FormLabel>
-          <NumberInput step={10} defaultValue={15} min={10} max={500} onChange={(value) => setSquare(parseInt(value))}>
+          <NumberInput
+            step={10}
+            defaultValue={15}
+            min={10}
+            max={500}
+            onChange={(value) => setSquare(parseInt(value))}
+            value={square}>
             <NumberInputField />
             <NumberInputStepper>
               <NumberIncrementStepper />
@@ -58,7 +64,8 @@ const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Func
               defaultValue={1}
               min={1}
               max={100}
-              onChange={(value) => setNumOfBedRoom(parseInt(value))}>
+              onChange={(value) => setNumOfBedRoom(parseInt(value))}
+              value={numOfBedRoom}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -68,7 +75,13 @@ const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Func
           </FormControl>
           <FormControl id='num-of-bed' isRequired mb={5}>
             <FormLabel>Số lượng giường ngủ: </FormLabel>
-            <NumberInput step={1} defaultValue={1} min={1} max={100} onChange={(value) => setNumOfBed(parseInt(value))}>
+            <NumberInput
+              step={1}
+              defaultValue={1}
+              min={1}
+              max={100}
+              onChange={(value) => setNumOfBed(parseInt(value))}
+              value={numOfBed}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -85,7 +98,8 @@ const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Func
               defaultValue={1}
               min={1}
               max={100}
-              onChange={(value) => setNumOfBathRoom(parseInt(value))}>
+              onChange={(value) => setNumOfBathRoom(parseInt(value))}
+              value={numOfBathRoom}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -100,7 +114,8 @@ const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Func
               defaultValue={1}
               min={1}
               max={100}
-              onChange={(value) => setNumOfKitchen(parseInt(value))}>
+              onChange={(value) => setNumOfKitchen(parseInt(value))}
+              value={numOfKitchen}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />

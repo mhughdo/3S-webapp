@@ -19,12 +19,12 @@ import {
 import { useEffect, useState } from 'react'
 import InfoBox from '../InfoBox'
 
-const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncData: Function }) => {
-  const [cancelRule, setCancelRule] = useState('normal')
-  const [normalDayPrice, setNormalDayPrice] = useState(200000)
-  const [weekendPrice, setWeekendPrice] = useState(200000)
-  const [cleaningPrice, setCleaningPrice] = useState(50000)
-  const [maxPeople, setMaxPeople] = useState(1)
+const PricePolicy = ({ completeStep, syncData, data }: { completeStep: Function; syncData: Function; data: any }) => {
+  const [cancelRule, setCancelRule] = useState(data.policy_attributes.cancel_policy)
+  const [normalDayPrice, setNormalDayPrice] = useState(data.schedule_price_attributes.normal_day_price)
+  const [weekendPrice, setWeekendPrice] = useState(data.schedule_price_attributes.weekend_price)
+  const [cleaningPrice, setCleaningPrice] = useState(data.schedule_price_attributes.cleaning_price)
+  const [maxPeople, setMaxPeople] = useState(data.policy_attributes.max_num_of_people)
 
   useEffect(() => {
     completeStep(true)
@@ -43,7 +43,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
   }, [cancelRule, cleaningPrice, completeStep, maxPeople, normalDayPrice, syncData, weekendPrice])
 
   return (
-    <Box mt={10}>
+    <Box mt={10} pb={10}>
       <Flex mb={5}>
         <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
           <Box>
@@ -64,7 +64,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
               Chính sách huỷ phòng
             </Text>
           </Box>
-          <RadioGroup defaultValue='normal' onChange={(value) => setCancelRule(value.toString())}>
+          <RadioGroup defaultValue='normal' onChange={(value) => setCancelRule(value.toString())} value={cancelRule}>
             <Stack spacing={2} direction='column'>
               <Radio colorScheme='orange' value='normal'>
                 Trung bình
@@ -123,7 +123,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
           </Box>
           <FormControl id='max_num_of_people' isRequired mb={5} mr={5}>
             <FormLabel>Số lượng người tối đa: </FormLabel>
-            <NumberInput step={1} defaultValue={1} min={1} max={100} onChange={(value) => setMaxPeople(parseInt(value))}>
+            <NumberInput step={1} defaultValue={1} min={1} max={100} onChange={(value) => setMaxPeople(parseInt(value))} value={maxPeople}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -152,7 +152,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
           </Box>
           <FormControl id='normal_day_price' isRequired mb={5} mr={5}>
             <FormLabel>Giá ngày thường: </FormLabel>
-            <NumberInput step={50000} defaultValue={200000} min={0} max={10000000} onChange={(value) => setNormalDayPrice(parseInt(value))}>
+            <NumberInput step={50000} defaultValue={200000} min={0} max={10000000} onChange={(value) => setNormalDayPrice(parseInt(value))} value={normalDayPrice}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -162,7 +162,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
           </FormControl>
           <FormControl id='weekend_price' isRequired mb={5} mr={5}>
             <FormLabel>Giá ngày cuối tuần: </FormLabel>
-            <NumberInput step={50000} defaultValue={200000} min={0} max={10000000} onChange={(value) => setWeekendPrice(parseInt(value))}>
+            <NumberInput step={50000} defaultValue={200000} min={0} max={10000000} onChange={(value) => setWeekendPrice(parseInt(value))} value={weekendPrice}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -172,7 +172,7 @@ const PricePolicy = ({ completeStep, syncData }: { completeStep: Function; syncD
           </FormControl>
           <FormControl id='cleaning_price' isRequired mb={5} mr={5}>
             <FormLabel>Phí dọn dẹp: </FormLabel>
-            <NumberInput step={10000} defaultValue={50000} min={0} max={10000000} onChange={(value) => setCleaningPrice(parseInt(value))}>
+            <NumberInput step={10000} defaultValue={50000} min={0} max={10000000} onChange={(value) => setCleaningPrice(parseInt(value))} value={cleaningPrice}>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />

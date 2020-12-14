@@ -9,9 +9,25 @@ import { Upload, message } from 'antd'
 import axios from 'axios'
 import InfoBox from '../InfoBox'
 
-const PlaceImage = ({ completeStep, syncData }: { completeStep: Function; syncData: Function }) => {
-  const [uploadedOverviewImages, setUploadedOverviewImages] = useState<Array<string>>([])
-  const [uploadedCoverImage, setUploadedCoverImage] = useState<string>('')
+const PlaceImage = ({
+  completeStep,
+  syncData,
+  imageData,
+}: {
+  completeStep: Function
+  syncData: Function
+  imageData: any
+}) => {
+  const initData = () => {
+    const dataTemp = []
+    imageData.overviews_attributes.forEach((item) => {
+      dataTemp.push(item.image)
+    })
+    return dataTemp
+  }
+
+  const [uploadedOverviewImages, setUploadedOverviewImages] = useState<Array<string>>(initData())
+  const [uploadedCoverImage, setUploadedCoverImage] = useState<string>(imageData.image)
   const [overviewList, setOverviewList] = useState<Array<any>>([])
   const [coverList, setCoverList] = useState<Array<any>>([])
   const [isOverviewLoading, setIsOverviewLoading] = useState<boolean>(false)
@@ -114,7 +130,7 @@ const PlaceImage = ({ completeStep, syncData }: { completeStep: Function; syncDa
   }
 
   return (
-    <Box mt={10}>
+    <Box mt={10} pb={10}>
       <Flex>
         <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
           <Box borderBottomColor='gray.200' borderBottomWidth={1} mb={5} pb={3}>
