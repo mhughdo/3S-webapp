@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Room = ({ showNextTab }: { showNextTab: Function }) => {
+const Room = ({ completeTab, syncRoom }: { completeTab: Function; syncRoom: Function }) => {
   const [square, setSquare] = useState(15)
   const [numOfBedRoom, setNumOfBedRoom] = useState(1)
   const [numOfBed, setNumOfBed] = useState(1)
@@ -22,8 +22,15 @@ const Room = ({ showNextTab }: { showNextTab: Function }) => {
   const [numOfKitchen, setNumOfKitchen] = useState(1)
 
   useEffect(() => {
-    showNextTab(true)
-  }, [showNextTab])
+    syncRoom({
+      square,
+      num_of_bed: numOfBed,
+      num_of_bathroom: numOfBathRoom,
+      num_of_bedroom: numOfBedRoom,
+      num_of_kitchen: numOfKitchen,
+    })
+    completeTab(true)
+  }, [completeTab, numOfBathRoom, numOfBed, numOfBedRoom, numOfKitchen, square, syncRoom])
 
   return (
     <Flex>

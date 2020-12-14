@@ -3,18 +3,30 @@ import { Box, Select, FormControl, FormLabel, Input, Text, Flex, Spacer } from '
 import { useEffect, useState } from 'react'
 import InfoBox from '../InfoBox'
 
-const BaseInformation = ({ showNextTab }: { showNextTab: Function }) => {
+const BaseInformation = ({
+  completeTab,
+  syncPlaceName,
+  syncPlaceType,
+}: {
+  completeTab: Function
+  syncPlaceName: Function
+  syncPlaceType: Function
+}) => {
   const [placeName, setPlaceName] = useState('')
   const [placeType, setPlaceType] = useState('')
-  const [rentType, setRentType] = useState('')
 
   useEffect(() => {
-    if (placeName === '' || placeType === '' || rentType === '') {
-      showNextTab(false)
-    } else showNextTab(true)
-  }, [placeName, placeType, rentType, showNextTab])
+    if (placeName === '' || placeType === '') {
+      completeTab(false)
+    } else {
+      syncPlaceName(placeName)
+      syncPlaceType(placeType)
+      completeTab(true)
+    }
+  }, [placeName, placeType, completeTab, syncPlaceName, syncPlaceType])
+
   return (
-    <Flex>
+    <Flex mb={10}>
       <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
         <Box borderBottomColor='gray.200' borderBottomWidth={1} mb={5} pb={3}>
           <Text fontSize='xl' fontWeight='bold'>
@@ -26,11 +38,16 @@ const BaseInformation = ({ showNextTab }: { showNextTab: Function }) => {
         </Box>
         <FormControl id='place_type' isRequired mb={5}>
           <FormLabel>Chỗ nghỉ của bạn là:</FormLabel>
-          <Select placeholder='Chọn loại chỗ nghỉ' onChange={(event) => setPlaceType(event.target.value)}>
-            <option value={1}>Homestay</option>
-            <option value={2}>Nhà riêng</option>
-            <option value={3}>Biệt thư</option>
-            <option value={4}>Chung cư</option>
+          <Select
+            placeholder='Chọn loại chỗ nghỉ'
+            onChange={(event) => setPlaceType(event.target.value)}
+            value={placeType}>
+            <option value='homestay'>Homestay</option>
+            <option value='villa'>Villa</option>
+            <option value='apartment'>Căn hộ</option>
+            <option value='penhouse'>Penhouse</option>
+            <option value='hostel'>Hotel</option>
+            <option value='motel'>Motel</option>
           </Select>
         </FormControl>
         <InfoBox
@@ -41,22 +58,11 @@ const BaseInformation = ({ showNextTab }: { showNextTab: Function }) => {
           <FormLabel>Tên chỗ nghỉ</FormLabel>
           <Input
             placeholder='Tên chỗ nghỉ'
+            value={placeName}
             onChange={(event) => {
               setPlaceName(event.target.value)
             }}
           />
-        </FormControl>
-        <FormControl id='rent_type' isRequired mb={5}>
-          <FormLabel>Hình thức cho thuê</FormLabel>
-          <Select
-            placeholder='Hình thức cho thuê'
-            onChange={(event) => {
-              setRentType(event.target.value)
-            }}>
-            <option value={1}>Nguyên căn</option>
-            <option value={2}>Phòng riêng</option>
-            <option value={3}>Phòng tập thể</option>
-          </Select>
         </FormControl>
       </Box>
       <Spacer />

@@ -3,12 +3,13 @@ import { Box, Textarea, FormControl, FormLabel, Text, Flex, Spacer } from '@chak
 import { useEffect, useState } from 'react'
 import InfoBox from '../InfoBox'
 
-const Overview = ({ showNextTab }: { showNextTab: Function }) => {
+const Overview = ({ completeTab, syncOverview }: { completeTab: Function; syncOverview: Function }) => {
   const [overview, setOverview] = useState('')
 
   useEffect(() => {
-    showNextTab(true)
-  }, [showNextTab])
+    syncOverview(overview)
+    completeTab(true)
+  }, [completeTab, overview, syncOverview])
 
   return (
     <Flex>

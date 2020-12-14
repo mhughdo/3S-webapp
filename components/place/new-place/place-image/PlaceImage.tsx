@@ -1,11 +1,118 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { useRef } from 'react'
-import { Box, Button, FormControl, FormLabel, Input, Text, Flex, Spacer } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { Box, FormControl, FormLabel, IconButton, Text, Flex, Spacer, Image, Button, Spinner } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { Upload, message } from 'antd'
+import axios from 'axios'
 import InfoBox from '../InfoBox'
 
-const PlaceImage = () => {
-  const file = useRef(null)
+const PlaceImage = ({ completeStep, syncData }: { completeStep: Function; syncData: Function }) => {
+  const [uploadedOverviewImages, setUploadedOverviewImages] = useState<Array<string>>([])
+  const [uploadedCoverImage, setUploadedCoverImage] = useState<string>('')
+  const [overviewList, setOverviewList] = useState<Array<any>>([])
+  const [coverList, setCoverList] = useState<Array<any>>([])
+  const [isOverviewLoading, setIsOverviewLoading] = useState<boolean>(false)
+  const [isCoverLoading, setIsCoverLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (uploadedCoverImage !== '' && uploadedOverviewImages.length >= 8) {
+      completeStep(true)
+    } else {
+      completeStep(false)
+    }
+  }, [completeStep, syncData, uploadedCoverImage, uploadedOverviewImages])
+
+  const updateData = () => {
+    const overviewImages = []
+    uploadedOverviewImages.forEach((image) => {
+      overviewImages.push({ image })
+    })
+    syncData({
+      image: uploadedCoverImage,
+      overviews_attributes: overviewImages,
+    })
+  }
+  const handleOverviewChange = (info) => {
+    const fileListTemp = [...info.fileList]
+    setOverviewList(fileListTemp)
+  }
+
+  const handleCoverChange = (info) => {
+    const fileListTemp = [...info.fileList]
+    setCoverList(fileListTemp)
+  }
+
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('wrong_format')
+    }
+    const isLt3M = file.size / 1024 / 1024 < 3
+    if (!isLt3M) {
+      message.error('wrong_size')
+    }
+    return false
+  }
+
+  const uploadFile = async (signedRequest, file) => {
+    try {
+      await axios.put(signedRequest, file.originFileObj, {
+        headers: {
+          'Content-Type': file.type,
+        },
+      })
+    } catch (error) {
+      message.error('error')
+    }
+  }
+
+  const pushOverviewImage = () => {
+    setIsOverviewLoading(true)
+    overviewList.forEach(async (file) => {
+      const { data } = await axios.get(
+        process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api/sign-s3' : '/api/sign-s3',
+        {
+          params: {
+            'file-name': file.name,
+            'file-type': file.type,
+          },
+        }
+      )
+      const { signedRequest, url: avatarURL } = data
+      await uploadFile(signedRequest, file)
+      const urlImages = uploadedOverviewImages
+      urlImages.push(avatarURL)
+      setUploadedOverviewImages(urlImages)
+      setOverviewList([])
+      updateData()
+    })
+    setIsOverviewLoading(false)
+  }
+
+  const pushCoverImage = () => {
+    setIsCoverLoading(true)
+    coverList.forEach(async (file) => {
+      const { data } = await axios.get(
+        process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api/sign-s3' : '/api/sign-s3',
+        {
+          params: {
+            'file-name': file.name,
+            'file-type': file.type,
+          },
+        }
+      )
+      const { signedRequest, url: avatarURL } = data
+      await uploadFile(signedRequest, file)
+      setUploadedCoverImage(avatarURL)
+      setCoverList([])
+      updateData()
+    })
+    setIsCoverLoading(false)
+  }
+
   return (
     <Box mt={10}>
       <Flex>
@@ -20,20 +127,45 @@ const PlaceImage = () => {
           </Box>
           <FormControl id='cover_image' isRequired mb={5}>
             <FormLabel>Ảnh bìa:</FormLabel>
-            <Input
-              type='file'
-              display='none'
-              ref={file}
-              onChange={(event) => {
-                console.log(URL.createObjectURL(event.target.files[0]))
-              }}
-            />
-            <Button onClick={() => file.current.click()}>Upload Image</Button>
+            <Flex>
+              <Image src={uploadedCoverImage} width='23%' mr={5} />
+            </Flex>
+            <Upload
+              name='avatar'
+              // action={uploadURL}
+              accept='.png, .jpg, .jpeg'
+              multiple={false}
+              fileList={coverList}
+              onChange={handleCoverChange}
+              beforeUpload={beforeUpload}
+              withCredentials>
+              <IconButton colorScheme='orange' size='sm' mt={3} aria-label='Search database' icon={<AddIcon />} />
+            </Upload>
+            <Button colorScheme='orange' size='sm' mt={3} onClick={pushCoverImage}>
+              {isCoverLoading ? <Spinner color='orange.500' /> : 'Save'}
+            </Button>
           </FormControl>
           <FormControl id='overview_image' isRequired mb={5}>
             <FormLabel>Ảnh chỗ nghỉ:</FormLabel>
-            <Input type='file' display='none' ref={file} />
-            <Button onClick={() => file.current.click()}>Upload Image</Button>
+            <Flex flexWrap='wrap'>
+              {uploadedOverviewImages.map((item, index) => (
+                <Image src={item} width='21.5%' key={index} mr={5} mb={5} />
+              ))}
+            </Flex>
+            <Upload
+              name='avatar'
+              // action={uploadURL}
+              accept='.png, .jpg, .jpeg'
+              multiple
+              fileList={overviewList}
+              onChange={handleOverviewChange}
+              beforeUpload={beforeUpload}
+              withCredentials>
+              <IconButton colorScheme='orange' size='sm' mt={3} aria-label='Search database' icon={<AddIcon />} />
+            </Upload>
+            <Button colorScheme='orange' size='sm' mt={3} onClick={pushOverviewImage}>
+              {isOverviewLoading ? <Spinner color='orange.500' /> : 'Save'}
+            </Button>
           </FormControl>
         </Box>
         <Spacer />

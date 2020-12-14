@@ -2,7 +2,7 @@
 import { Box, Text, Flex, Checkbox } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Facility = ({ showNextTab }: { showNextTab: Function }) => {
+const Facility = ({ completeTab, syncFacilities }: { completeTab: Function; syncFacilities: Function }) => {
   const [hasTV, setHasTV] = useState(false)
   const [hasWifi, setHasWifi] = useState(false)
   const [hasConditioner, setHasConditioner] = useState(false)
@@ -13,8 +13,29 @@ const Facility = ({ showNextTab }: { showNextTab: Function }) => {
   const [hasSofa, setHasSofa] = useState(false)
 
   useEffect(() => {
-    showNextTab(true)
-  }, [showNextTab])
+    const facilities = []
+    if (hasWifi) facilities.push({ facility_id: 1 })
+    if (hasTV) facilities.push({ facility_id: 2 })
+    if (hasConditioner) facilities.push({ facility_id: 3 })
+    if (hasWashingMachine) facilities.push({ facility_id: 4 })
+    if (hasMicrowave) facilities.push({ facility_id: 5 })
+    if (hasFridge) facilities.push({ facility_id: 6 })
+    if (hasBalcony) facilities.push({ facility_id: 7 })
+    if (hasSofa) facilities.push({ facility_id: 8 })
+    syncFacilities(facilities)
+    completeTab(true)
+  }, [
+    completeTab,
+    hasBalcony,
+    hasConditioner,
+    hasFridge,
+    hasMicrowave,
+    hasSofa,
+    hasTV,
+    hasWashingMachine,
+    hasWifi,
+    syncFacilities,
+  ])
 
   return (
     <Flex>

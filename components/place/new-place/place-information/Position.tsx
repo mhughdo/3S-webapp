@@ -3,18 +3,30 @@ import { Box, Select, FormControl, FormLabel, Input, Text, Flex, Spacer } from '
 import { useEffect, useState } from 'react'
 import InfoBox from '../InfoBox'
 
-const Position = ({ showNextTab }: { showNextTab: Function }) => {
+const Position = ({
+  completeTab,
+  syncCity,
+  syncAddress,
+}: {
+  completeTab: Function
+  syncCity: Function
+  syncAddress: Function
+}) => {
   const [city, setCity] = useState('')
   const [address, setAddress] = useState('')
 
   useEffect(() => {
     if (city === '' || address === '') {
-      showNextTab(false)
-    } else showNextTab(true)
-  }, [city, address, showNextTab])
+      completeTab(false)
+    } else {
+      syncCity(city)
+      syncAddress(address)
+      completeTab(true)
+    }
+  }, [city, address, completeTab, syncCity, syncAddress])
 
   return (
-    <Flex>
+    <Flex mb={10}>
       <Box border='1px' borderColor='gray.200' borderRadius='md' p={5} w='60%'>
         <Box borderBottomColor='gray.200' borderBottomWidth={1} mb={5} pb={3}>
           <Text fontSize='xl' fontWeight='bold'>
@@ -24,14 +36,14 @@ const Position = ({ showNextTab }: { showNextTab: Function }) => {
         <FormControl id='city' isRequired mb={5}>
           <FormLabel>Thành phố:</FormLabel>
           <Select placeholder='Thành phố' onChange={(event) => setCity(event.target.value)}>
-            <option>Hà Nội</option>
-            <option>TP. Hồ Chí Minh</option>
-            <option>Vũng Tàu</option>
-            <option>Đà Lạt</option>
-            <option>Nha Trang</option>
-            <option>Quảng Ninh</option>
-            <option>Hội An</option>
-            <option>Đà Nắng</option>
+            <option value='hanoi'>Hà Nội</option>
+            <option value='hcm'>TP. Hồ Chí Minh</option>
+            <option value='vungtau'>Vũng Tàu</option>
+            <option value='dalat'>Đà Lạt</option>
+            <option value='nhatrang'>Nha Trang</option>
+            <option value='quangninh'>Quảng Ninh</option>
+            <option value='hoian'>Hội An</option>
+            <option value='danang'>Đà Nắng</option>
           </Select>
         </FormControl>
         <FormControl id='address-detail' isRequired mb={5}>

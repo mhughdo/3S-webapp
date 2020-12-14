@@ -2,16 +2,23 @@
 import { Box, FormControl, FormLabel, Textarea, Text, Flex, RadioGroup, Stack, Radio } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-const Rule = ({ showNextTab }: { showNextTab: Function }) => {
-  const [smoking, setSmoking] = useState(0)
-  const [pet, setPet] = useState(1)
-  const [party, setParty] = useState(1)
-  const [cooking, setCooking] = useState(1)
+const Rule = ({ completeTab, syncRule }: { completeTab: Function; syncRule: Function }) => {
+  const [smoking, setSmoking] = useState('unallowed')
+  const [pet, setPet] = useState('allowed')
+  const [party, setParty] = useState('allowed')
+  const [cooking, setCooking] = useState('allowed')
   const [specialRule, setSpecialRule] = useState('')
 
   useEffect(() => {
-    showNextTab(true)
-  }, [showNextTab])
+    syncRule({
+      smoking,
+      pet,
+      party,
+      cooking,
+      special_rules: specialRule,
+    })
+    completeTab(true)
+  }, [completeTab, cooking, party, pet, smoking, specialRule, syncRule])
 
   return (
     <Flex>
@@ -24,15 +31,15 @@ const Rule = ({ showNextTab }: { showNextTab: Function }) => {
         <FormControl id='smoking' isRequired mb={5}>
           <FormLabel>Hút thuốc</FormLabel>
           <RadioGroup
-            defaultValue='0'
-            onChange={(value) => {
-              setSmoking(parseInt(value))
+            defaultValue='unallowed'
+            onChange={(value: string) => {
+              setSmoking(value)
             }}>
             <Stack direction='row'>
-              <Radio value='1' colorScheme='orange' w='50%'>
+              <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
               </Radio>
-              <Radio value='0' colorScheme='orange'>
+              <Radio value='unallowed' colorScheme='orange'>
                 Không cho phép
               </Radio>
             </Stack>
@@ -41,34 +48,32 @@ const Rule = ({ showNextTab }: { showNextTab: Function }) => {
         <FormControl id='pet' isRequired mb={5}>
           <FormLabel>Nuôi động vật</FormLabel>
           <RadioGroup
-            defaultValue='1'
-            onChange={(value) => {
-              setPet(parseInt(value))
+            defaultValue='allowed'
+            onChange={(value: string) => {
+              setPet(value)
             }}>
             <Stack direction='row'>
-              <Radio value='1' colorScheme='orange' w='50%'>
+              <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
               </Radio>
-              <Radio value='2' colorScheme='orange'>
+              <Radio value='unallowed' colorScheme='orange'>
                 Không cho phép
               </Radio>
             </Stack>
           </RadioGroup>
         </FormControl>
-        <FormControl
-          id='party'
-          isRequired
-          mb={5}
-          onChange={(value) => {
-            setParty(parseInt(value))
-          }}>
+        <FormControl id='party' isRequired mb={5}>
           <FormLabel>Tổ chức tiệc</FormLabel>
-          <RadioGroup defaultValue='1'>
+          <RadioGroup
+            defaultValue='allowed'
+            onChange={(value: string) => {
+              setParty(value)
+            }}>
             <Stack direction='row'>
-              <Radio value='1' colorScheme='orange' w='50%'>
+              <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
               </Radio>
-              <Radio value='2' colorScheme='orange'>
+              <Radio value='unallowed' colorScheme='orange'>
                 Không cho phép
               </Radio>
             </Stack>
@@ -77,15 +82,15 @@ const Rule = ({ showNextTab }: { showNextTab: Function }) => {
         <FormControl id='cooking' isRequired mb={5}>
           <FormLabel>Nấu ăn</FormLabel>
           <RadioGroup
-            defaultValue='1'
-            onChange={(value) => {
-              setCooking(parseInt(value))
+            defaultValue='allowed'
+            onChange={(value: string) => {
+              setCooking(value)
             }}>
             <Stack direction='row'>
-              <Radio value='1' colorScheme='orange' w='50%'>
+              <Radio value='allowed' colorScheme='orange' w='50%'>
                 Cho phép
               </Radio>
-              <Radio value='2' colorScheme='orange'>
+              <Radio value='unallowed' colorScheme='orange'>
                 Không cho phép
               </Radio>
             </Stack>
