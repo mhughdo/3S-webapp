@@ -219,20 +219,4 @@ function SignIn() {
   )
 }
 
-SignIn.getInitialProps = async (ctx): Promise<any> => {
-  const session = await getSession(ctx)
-
-  if (session?.user?.name) {
-    if (ctx?.res) {
-      ctx?.res.writeHead(302, {
-        Location: '/',
-      })
-
-      ctx?.res.end()
-    } else {
-      Router.push('/')
-    }
-  }
-}
-
 export default SignIn
