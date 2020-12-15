@@ -44,7 +44,6 @@ import differenceInDays from 'date-fns/differenceInDays'
 import { toDateString, dayOfWeek, calculateRoomPrice, formatPrice } from 'utils'
 import format from 'date-fns/format'
 import isEqual from 'date-fns/isEqual'
-import isBefore from 'date-fns/isBefore'
 import Marker from '../../assets/svg/marker.svg'
 
 const HR = chakra('hr')
@@ -93,7 +92,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
     !checkout ||
     isError ||
     Number.isNaN(guests) ||
-    guests > 4 ||
+    placeData?.policy_attributes?.max_num_of_people < guests ||
     isEqual(checkIn, checkOut) ||
     !isValidDate(checkIn) ||
     !isValidDate(checkOut) ||
