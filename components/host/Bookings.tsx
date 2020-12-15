@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/client'
 import { useEffect, useState } from 'react'
 import { useToast, Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { formatPrice } from 'utils'
 
 const Bookings = () => {
   const router = useRouter()
@@ -22,7 +23,7 @@ const Bookings = () => {
           id: item.id,
           key: index,
           placeName: item.place_name,
-          price: item.price,
+          price: `${formatPrice(item.price)}₫`,
           numOfPeople: item.num_of_people,
           startDate: item.start_date.split('T')[0],
           endDate: item.end_date.split('T')[0],
