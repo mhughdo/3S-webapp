@@ -105,8 +105,6 @@ const PlaceDetailsComponent = ({ placeId }) => {
     })
   }
 
-  console.log(placeData)
-
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
 
@@ -127,6 +125,7 @@ const PlaceDetailsComponent = ({ placeId }) => {
   return (
     <Box>
       <Nav
+        padding='1.5rem 0'
         display={showStickyNavBar ? 'flex' : 'none'}
         position='sticky'
         backgroundColor='white'
@@ -165,7 +164,7 @@ const PlaceDetailsComponent = ({ placeId }) => {
             ))}
           </Box>
           <Box paddingRight='1.7rem'>
-            <ShareAndLikeBtn />
+            <Box padding='1.5rem 0' />
           </Box>
         </Container>
       </Nav>
@@ -192,8 +191,8 @@ const PlaceDetailsComponent = ({ placeId }) => {
                 </Box>
               </Box>
               <Box flex='1'>
-                <ShareAndLikeBtn />
-                <BookingForm />
+                <ShareAndLikeBtn id={placeId} />
+                <BookingForm id={placeId} price={placeData?.schedule_price_attributes} />
               </Box>
             </Flex>
           </Box>

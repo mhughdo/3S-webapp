@@ -13,6 +13,8 @@ const ReviewForm = ({ id }) => {
   const toast = useToast()
   const [score, setScore] = useState(0)
   const [comment, setComment] = useState('')
+  const [commentLoading, setCommentLoading] = useState(false)
+  const [commentSuccess, setCommentSuccess] = useState(false)
   const [disable, setDisable] = useState(true)
   const [session, loading] = useSession()
 
@@ -24,6 +26,7 @@ const ReviewForm = ({ id }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setCommentLoading(true)
     axios
       .post(`/v1/place/${id}/rating/new`, { score, comment })
       .then(({ data }) => {
@@ -35,6 +38,8 @@ const ReviewForm = ({ id }) => {
           isClosable: true,
           position: 'top',
         })
+        setCommentLoading(false)
+        setCommentSuccess(true)
         setScore(0)
         setComment('')
       })
@@ -63,14 +68,9 @@ const ReviewForm = ({ id }) => {
           </Box>
           <Box display='flex' marginLeft={3} color='#FFB500' pt={0.25}>
             {[1, 2, 3, 4, 5].map((value) => (
-              <IconButton
-                sx={{ backgroundColor: 'white', marginTop: '-7px', outline: 'none', marginLeft: '-7px' }}
-                aria-label='star-rating'
-                key={value}
-                fontSize={24}
-                icon={score < value ? <AiOutlineStar /> : <AiFillStar />}
-                onClick={() => setScore(value)}
-              />
+              <Box fontSize='24px' key={value} onClick={() => setScore(value)}>
+                {score < value ? <AiOutlineStar /> : <AiFillStar />}
+              </Box>
             ))}
           </Box>
         </Box>
@@ -83,7 +83,12 @@ const ReviewForm = ({ id }) => {
           size='md'
           resize='none'
         />
-        <Button disabled={disable} onClick={handleSubmit} ml='700px' backgroundColor='#F66038' color='white'>
+        <Button
+          disabled={disable || commentLoading}
+          onClick={handleSubmit}
+          ml='700px'
+          backgroundColor='#F66038'
+          color='white'>
           Submit
         </Button>
       </Box>

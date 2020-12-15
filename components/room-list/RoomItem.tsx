@@ -75,9 +75,6 @@ function RoomItem({
               />
             </NextLink>
           )}
-          <Box position='absolute' right={2.5} top={3.5} cursor='pointer'>
-            <FaRegHeart style={{ color: '#f65e39', fontSize: '20px' }} />
-          </Box>
         </Box>
         <Box mt={3} fontSize={18} color='#222'>
           {isLoading ? (
