@@ -208,33 +208,33 @@ const HostHeaderComponent = () => {
                   </Box>
                 </Box>
               ) : (
-                  <>
-                    <Box ml={4} d='inline-flex' alignItems='center'>
-                      <NextLink href='/signup'>
-                        <Link
-                          href='/signup'
-                          fontSize='0.9rem'
-                          fontWeight='700'
-                          textDecoration='none !important'
-                          _hover={{ color: 'orange.500' }}>
-                          Đăng ký
+                <>
+                  <Box ml={4} d='inline-flex' alignItems='center'>
+                    <NextLink href='/signup'>
+                      <Link
+                        href='/signup'
+                        fontSize='0.9rem'
+                        fontWeight='700'
+                        textDecoration='none !important'
+                        _hover={{ color: 'orange.500' }}>
+                        Đăng ký
                       </Link>
-                      </NextLink>
-                    </Box>
-                    <Box ml={4} d='inline-flex' alignItems='center'>
-                      <NextLink href='/signin'>
-                        <Link
-                          href='/signin'
-                          fontSize='0.9rem'
-                          fontWeight='700'
-                          textDecoration='none !important'
-                          _hover={{ color: 'orange.500' }}>
-                          Đăng nhập
+                    </NextLink>
+                  </Box>
+                  <Box ml={4} d='inline-flex' alignItems='center'>
+                    <NextLink href='/signin'>
+                      <Link
+                        href='/signin'
+                        fontSize='0.9rem'
+                        fontWeight='700'
+                        textDecoration='none !important'
+                        _hover={{ color: 'orange.500' }}>
+                        Đăng nhập
                       </Link>
-                      </NextLink>
-                    </Box>{' '}
-                  </>
-                )}
+                    </NextLink>
+                  </Box>{' '}
+                </>
+              )}
             </Box>
           </Box>
         </Box>
