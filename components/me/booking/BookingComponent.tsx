@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   Box,
   Container,
@@ -11,12 +13,15 @@ import {
   List,
   ListItem,
   chakra,
+  useToast,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IoIosArrowDown } from 'react-icons/io'
 import { FaHome } from 'react-icons/fa'
 import { SingleDatePicker } from 'react-dates'
 import moment from 'node_modules/moment/ts3.1-typings/moment'
+import { useSession } from 'next-auth/client'
+import axios from '@utils/axios'
 import BookingCard from './BookingCard'
 
 type FormData = {
@@ -34,6 +39,35 @@ const BookingComponent = () => {
 
   const [focusedStartDate, setFocusedStartDate] = useState(null)
   const [focusedEndDate, setFocusedEndDate] = useState(null)
+  const toast = useToast()
+  const [session, loading] = useSession()
+  const [dataSource, setDataSource] = useState([])
+
+  const initData = async (id: number) => {
+    try {
+      const { data } = await axios({
+        url: `/v1/booking/user/${id}`,
+        method: 'get',
+      })
+      setDataSource(data.data)
+      debugger
+    } catch (error) {
+      toast({
+        title: 'Có sự cố xảy ra',
+        description: 'Vui lòng kiểm tra lại đường truyền mạng',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+    }
+  }
+  useEffect(() => {
+    if (!loading) {
+      const { full_info } = session
+      initData(full_info.id) as any
+    }
+  }, [loading, session])
 
   return (
     <Box background='#f8f8f8' py={6}>
@@ -167,8 +201,9 @@ const BookingComponent = () => {
           </Box>
           <Box className='content'>
             <Box mt={6}>
-              <BookingCard />
-              <BookingCard />
+              {dataSource.map((item) => (
+                <BookingCard data={item} />
+              ))}
             </Box>
           </Box>
         </Box>

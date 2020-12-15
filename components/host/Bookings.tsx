@@ -3,8 +3,10 @@ import axios from '@utils/axios'
 import { useSession } from 'next-auth/client'
 import { useEffect, useState } from 'react'
 import { useToast, Button } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 const Bookings = () => {
+  const router = useRouter()
   const toast = useToast()
   const [session, loading] = useSession()
   const [dataSource, setDataSource] = useState([])
@@ -91,7 +93,17 @@ const Bookings = () => {
     },
   ]
 
-  return <Table dataSource={dataSource} columns={columns} />
+  return (
+    <Table
+      dataSource={dataSource}
+      columns={columns}
+      onRow={(record) => ({
+        onDoubleClick: () => {
+          router.push(`/place/${record.id}`)
+        }, // double click row
+      })}
+    />
+  )
 }
 
 export default Bookings

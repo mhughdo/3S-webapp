@@ -1,8 +1,7 @@
-import { Box, Image, Text, Stack } from '@chakra-ui/react'
-import Place1 from '@assets/places/1.jpg'
-import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { Box, Image, Text, Stack, Link } from '@chakra-ui/react'
+import { FaHeart } from 'react-icons/fa'
 
-const Promo = () => (
+const Promo = ({ data }) => (
   <Box mt={3} width='100%'>
     <Box>
       <Box
@@ -15,7 +14,7 @@ const Promo = () => (
         }}
         position='relative'
         zIndex='0'>
-        <Image width='100%' height={230} top={0} left={0} objectFit='cover' borderRadius='3px' src={Place1} />
+        <Image width='100%' height={230} top={0} left={0} objectFit='cover' borderRadius='3px' src={data.place_image} />
         <Box position='absolute' left={2.5} top={3.5}>
           <span
             style={{
@@ -44,16 +43,18 @@ const Promo = () => (
           cursor='pointer'
           transition='all .3s'
           fontWeight='bolder'>
-          <Text>AnimeHomeStay#5 - Phan Boi Chau / Self Check-in</Text>
+          <Link href={`/place/${data.place_id}`} style={{ textDecoration: 'none' }}>
+            <Text>{data.place_name}</Text>
+          </Link>
         </Box>
         <Stack mt={2} direction='row' spacing={3} fontSize={14}>
           <Text fontWeight='bolder'>315,000₫/đêm</Text>
           <Text as='s' color='#999'>
-            350,000₫
+            {data.place_price}₫
           </Text>
         </Stack>
         <Box fontSize={16} mt={3}>
-          Hoàn Kiếm, Hà Nội, Vietnam
+          {data.place_address}
         </Box>
       </Box>
     </Box>

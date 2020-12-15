@@ -12,10 +12,12 @@ import React, { useEffect, useState } from 'react'
 import 'antd/dist/antd.css';
 import { Steps } from 'antd';
 import axios from '@utils/axios'
+import { useRouter } from 'next/router'
 
 const { Step } = Steps;
 
 const CreatePlace = () => {
+  const router = useRouter()
   const [isCompletePlaceInfo, setIsCompletePlaceInfo] = useState(false)
   const [isCompletePlaceImage, setIsCompletePlaceImage] = useState(false)
   const [isCompletePlacePolicy, setIsCompletePlacePolicy] = useState(false)
@@ -71,7 +73,17 @@ const CreatePlace = () => {
           method: 'post',
           data: { ...placeInfo, ...placeImage, ...placePolicy }
         })
-        console.log(data)
+        if (data) {
+          toast({
+            title: 'Thành công',
+            description: 'Bạn đã đăng bài thành công',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            position: 'top',
+          })
+          router.push('/host')
+        }
       } catch (error) {
         toast({
           title: 'Sai định dạng dữ liệu',
