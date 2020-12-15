@@ -1,5 +1,6 @@
 import { Box, Image, Text, Stack, Link } from '@chakra-ui/react'
 import { FaHeart } from 'react-icons/fa'
+import { formatPrice } from '@utils/index'
 
 const Promo = ({ data }) => (
   <Box mt={3} width='100%'>
@@ -48,9 +49,9 @@ const Promo = ({ data }) => (
           </Link>
         </Box>
         <Stack mt={2} direction='row' spacing={3} fontSize={14}>
-          <Text fontWeight='bolder'>315,000₫/đêm</Text>
+          <Text fontWeight='bolder'>{formatPrice(data.place_price)}₫/đêm</Text>
           <Text as='s' color='#999'>
-            {data.place_price}₫
+            {formatPrice(data.place_price)}₫
           </Text>
         </Stack>
         <Box fontSize={16} mt={3}>

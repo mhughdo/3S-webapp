@@ -1,4 +1,5 @@
 import { Box, GridItem, Grid, Text, Link, Tag } from '@chakra-ui/react'
+import { formatPrice } from '@utils/index'
 
 const BookingCard = ({ data }) => (
   <Box
@@ -58,7 +59,7 @@ const BookingCard = ({ data }) => (
               <Text fontSize='sm' color='#999' mb={2}>
                 Tổng tiền
               </Text>
-              <Text>{data.price}₫</Text>
+              <Text>{formatPrice(data.price)}₫</Text>
             </Box>
           </GridItem>
           <GridItem>
