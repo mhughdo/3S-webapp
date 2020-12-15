@@ -260,7 +260,7 @@ const ProfileForm = () => {
             <Text mb={2} color='#666' fontWeight='bold'>
               Giới tính
             </Text>
-            <RadioGroup value={gender} defaultValue='male' onChange={(value) => setGender(value)}>
+            <RadioGroup value={gender} defaultValue='male' onChange={(value: string) => setGender(value)}>
               <Stack direction='row' spacing={3}>
                 <Radio
                   cursor='pointer'
