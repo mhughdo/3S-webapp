@@ -125,8 +125,7 @@ const PlaceDetailsComponent = ({ placeId }) => {
   return (
     <Box>
       <Nav
-        pt='1.5rem'
-        px={0}
+        padding='1.5rem 0'
         display={showStickyNavBar ? 'flex' : 'none'}
         position='sticky'
         backgroundColor='white'
@@ -165,7 +164,7 @@ const PlaceDetailsComponent = ({ placeId }) => {
             ))}
           </Box>
           <Box paddingRight='1.7rem'>
-            <Box pt='1.5rem' px={0} />
+            <Box padding='1.5rem 0' />
           </Box>
         </Container>
       </Nav>
