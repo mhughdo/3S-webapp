@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable react/no-children-prop */
 import Header from '@components/Header'
 import NextLink from 'next/link'
@@ -20,15 +21,15 @@ import {
   AlertTitle,
 } from '@chakra-ui/react'
 import MediaBox from '@components/signin/MediaBox'
-import { signIn } from 'next-auth/client'
+import { signIn, getSession } from 'next-auth/client'
 import Coins from '@assets/signin/coins.png'
 import TopSales from '@assets/signin/top-sales.png'
 import Wallet from '@assets/signin/wallet.png'
 import BackPack from '@assets/signin/backpack.png'
 import { isValidEmail } from '@utils/validation'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 
-export default function SignIn() {
+function SignIn() {
   const toast = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const handleShowPassword = () => setShowPassword(!showPassword)
@@ -217,3 +218,21 @@ export default function SignIn() {
     </Grid>
   )
 }
+
+SignIn.getInitialProps = async (ctx): Promise<any> => {
+  const session = await getSession(ctx)
+
+  if (session?.user?.name) {
+    if (ctx?.res) {
+      ctx?.res.writeHead(302, {
+        Location: '/',
+      })
+
+      ctx?.res.end()
+    } else {
+      Router.push('/')
+    }
+  }
+}
+
+export default SignIn
