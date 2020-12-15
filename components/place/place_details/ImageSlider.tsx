@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Box, Image } from '@chakra-ui/react'
 import Silder from 'react-slick'
 import NextArrow from './NextArrow'
 import PrevArrow from './PrevArrow'
 
-const ImageSlider = () => {
+const ImageSlider = ({ slide }) => {
   const settings = {
     className: 'center',
     infinite: true,
@@ -16,48 +17,11 @@ const ImageSlider = () => {
   return (
     <Box width='100%'>
       <Silder {...settings}>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
-        <Box>
-          <Image
-            width='100%'
-            fallbackSrc='https://www.luxstay.com/loading-img.svg'
-            src='https://cdn.luxstay.com/rooms/34370/large/2f78a6f10c83e81708f369287c87e4b6.png'
-          />
-        </Box>
+        {slide?.map((s: { image: string }) => (
+          <Box>
+            <Image height='400px' width='100%' fallbackSrc='https://www.luxstay.com/loading-img.svg' src={s.image} />
+          </Box>
+        ))}
       </Silder>
     </Box>
   )

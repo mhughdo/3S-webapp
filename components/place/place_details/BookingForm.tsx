@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable camelcase */
 import {
   Box,
   Stack,
@@ -9,8 +11,12 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { SingleDatePicker } from 'react-dates'
-import moment from 'node_modules/moment/ts3.1-typings/moment'
+import { useRouter } from 'next/router'
+import { SingleDatePicker, DateRangePicker } from 'react-dates'
+import moment from 'moment'
+import { useQuery } from 'react-query'
+import axios from '@utils/axios'
+import { AmountFormat } from '@utils/amountFormat'
 
 type FormDataType = {
   startDate: moment.Moment
@@ -18,17 +24,53 @@ type FormDataType = {
   numOfGuest: number
 }
 
-const BookingForm = () => {
+type BookedDate = {
+  start_date: string
+  end_date: string
+}[]
+
+const BookingForm = ({ id, price }) => {
+  const router = useRouter()
   const [formData, setFormData] = useState<FormDataType>({
     startDate: null,
     endDate: null,
     numOfGuest: 1,
   })
-  const [focusedStartDate, setFocusedStartDate] = useState(null)
-  const [focusedEndDate, setFocusedEndDate] = useState(null)
+
+  const [focusedInput, setFocusedInput] = useState(null)
+
+  const {
+    isLoading,
+    isError,
+    data: { data: bookedDates } = {} as any,
+  }: { isError: boolean; isLoading: boolean; data: { data: BookedDate } } = useQuery(
+    ['getBookingByPlace', id],
+    async () => {
+      const { data } = await axios({
+        url: `/v1/booking/place/${id}`,
+        method: 'GET',
+      })
+
+      return data
+    },
+    { enabled: id, retry: false }
+  )
 
   const formatVal = (val: number): string => `${val} khách`
   const parseVal = (val: string): number => parseInt(val.replace(/^\[a-z]/, ''))
+
+  const handleSubmit = () => {
+    console.log(formData)
+    router.push({
+      pathname: '/checkout/who-coming/',
+      query: {
+        guests: formData.numOfGuest,
+        checkin: formData.startDate.format('YYYY-MM-DD'),
+        checkout: formData.endDate.format('YYYY-MM-DD'),
+        id,
+      },
+    })
+  }
 
   return (
     <Box position='sticky' borderRadius='3px' top='100px'>
@@ -37,7 +79,7 @@ const BookingForm = () => {
           <Box className='pricing'>
             <Stack direction='row' align='baseline'>
               <Text fontWeight='bolder' fontSize='3xl'>
-                491,200₫
+                {AmountFormat(price?.normal_day_price)}₫
               </Text>
               <Text fontSize='sm'>/đêm</Text>
             </Stack>
@@ -51,33 +93,28 @@ const BookingForm = () => {
             justifyContent='center'
             border='1px solid #ebebeb'
             borderRadius='5px'>
-            <SingleDatePicker
-              date={formData.startDate}
-              id='3S_start_date'
-              onDateChange={(startDate) => {
-                setFormData({ ...formData, startDate })
-              }}
-              focused={focusedStartDate}
-              onFocusChange={({ focused }) => setFocusedStartDate(focused)}
+            <DateRangePicker
+              startDate={formData.startDate}
+              startDateId='start-date-id'
+              endDate={formData.endDate}
+              endDateId='end-date-id'
+              onDatesChange={({ startDate, endDate }) =>
+                bookedDates.filter(
+                  (item) =>
+                    moment(item.start_date).isBetween(startDate, endDate, 'day') &&
+                    moment(item.end_date).isBetween(startDate, endDate, 'day')
+                ).length > 0
+                  ? setFormData({ ...formData, startDate, endDate: null })
+                  : setFormData({ ...formData, startDate, endDate })
+              }
+              isDayBlocked={(day) =>
+                bookedDates.filter((item) => day.isBetween(item.start_date, item.end_date, 'day', '[]')).length > 0
+              }
+              focusedInput={focusedInput}
+              onFocusChange={(input) => setFocusedInput(input)}
               numberOfMonths={1}
-              placeholder='dd/mm/yyyy'
-              displayFormat='DD/MM/YYYY'
-              hideKeyboardShortcutsPanel
-              showDefaultInputIcon={false}
-              readOnly
-              noBorder
-            />
-            <span>đến</span>
-            <SingleDatePicker
-              date={formData.endDate}
-              id='3S_end_date'
-              onDateChange={(endDate) => {
-                setFormData({ ...formData, endDate })
-              }}
-              focused={focusedEndDate}
-              onFocusChange={({ focused }) => setFocusedEndDate(focused)}
-              numberOfMonths={1}
-              placeholder='dd/mm/yyyy'
+              startDatePlaceholderText='dd/mm/yyyy'
+              endDatePlaceholderText='dd/mm/yyyy'
               displayFormat='DD/MM/YYYY'
               hideKeyboardShortcutsPanel
               showDefaultInputIcon={false}
@@ -106,6 +143,7 @@ const BookingForm = () => {
             </NumberInput>
           </Box>
           <Box
+            onClick={handleSubmit}
             as='button'
             color='#fff'
             width='100%'

@@ -235,7 +235,13 @@ const Home = () => {
             <Slider infinite speed={500} slidesToShow={4} slidesToScroll={4}>
               {data?.length
                 ? data.map((place) => (
-                    <PlaceBox key={place.id} imageUrl={place.image} name={place.name} address={place.address} />
+                    <PlaceBox
+                      key={place.id}
+                      placeId={place.id}
+                      imageUrl={place.image}
+                      name={place.name}
+                      address={place.address}
+                    />
                   ))
                 : !isLoading &&
                   !data?.length && (

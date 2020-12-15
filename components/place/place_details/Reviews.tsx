@@ -1,9 +1,56 @@
-import { Avatar, Box, chakra, Divider, Heading, Text } from '@chakra-ui/react'
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { Avatar, Box, chakra, Divider, Heading, Skeleton, Text, useToast } from '@chakra-ui/react'
 import { AiFillStar } from 'react-icons/ai'
 import { Element } from 'react-scroll'
+import axios from '@utils/axios'
+import { useQuery } from 'react-query'
+import ReviewForm from './ReviewForm'
 
-const Reviews = () => {
+type RatingType = {
+  score: number
+  comment: string
+  user_name: string
+  user_avatar: string
+}[]
+
+const Reviews = ({ id }) => {
   const NavLabel = chakra(Element)
+
+  const toast = useToast()
+
+  const {
+    isLoading,
+    isError,
+    data: { data: reviews } = [] as any,
+  }: { isError: boolean; isLoading: boolean; data: { data: RatingType } } = useQuery(
+    ['placeReviews', id],
+    async () => {
+      const { data } = await axios({
+        url: `/v1/place/${id}/ratings`,
+        method: 'GET',
+      })
+
+      return data
+    },
+    { enabled: id, retry: false }
+  )
+
+  if (isError) {
+    toast({
+      title: 'Đã có lỗi xảy ra',
+      description: 'Lỗi khi tải dữ liệu, vui lòng kiểm tra lại đường truyền mạng!',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+    })
+  }
+
   return (
     <NavLabel className='place-details-reviews' name='reviews' mt={20}>
       <Box className='reviews-title'>
@@ -11,33 +58,31 @@ const Reviews = () => {
           Đánh giá
         </Heading>
       </Box>
-      <Box className='single-review' my={8}>
-        <Box display='flex' flexDirection='row'>
-          <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
-          <Box ml={2} display='flex' pt={1}>
-            <Box>
-              <Heading as='h5' fontWeight='bolder' lineHeight='shorter' fontSize='md'>
-                Do Manh Hung
-              </Heading>
-              <Text fontSize='sm' color='#555'>
-                about 1 year
-              </Text>
+      {reviews?.length &&
+        reviews?.map((r) => (
+          <Box className='single-review' my={8}>
+            <Box display='flex' flexDirection='row'>
+              <Avatar name='Dan Abrahmov' src={r.user_avatar} />
+              <Box ml={2} display='flex' pt={1}>
+                <Box>
+                  <Heading as='h5' fontWeight='bolder' lineHeight='shorter' fontSize='md'>
+                    {!isLoading ? r.user_name : <Skeleton mt={1} height='12px' width='120px' />}
+                  </Heading>
+                </Box>
+                <Box display='flex' marginLeft={3} color='#FFB500' pt={0.25}>
+                  {[...Array(r.score)].map(() => (
+                    <AiFillStar fontSize={24} />
+                  ))}
+                </Box>
+              </Box>
             </Box>
-            <Box display='flex' marginLeft={3} color='#FFB500' pt={0.25}>
-              <AiFillStar style={{ marginRight: '3px', fontSize: '22px' }} />
-              <AiFillStar style={{ marginRight: '3px', fontSize: '22px' }} />
-              <AiFillStar style={{ marginRight: '3px', fontSize: '22px' }} />
+            <Box className='reviews-content' mt={5}>
+              <Text color='#555'>{!isLoading ? r.comment : <Skeleton mt={1} height='12px' width='240px' />}</Text>
             </Box>
           </Box>
-        </Box>
-        <Box className='reviews-content' mt={5}>
-          <Text color='#555'>
-            Phòng đẹp, không gian thoáng mát Nhận phòng thật sự ngạt nhiên, quá tuyệt vời với thái độ phục vụ của nhân
-            viên rất thân thiện. giá rất rẽ so với khu vực. Sẽ điểm chọn lựa của tôi nghỉ ngơi mỗi lần đến HCM
-          </Text>
-        </Box>
-      </Box>
+        ))}
       <Divider />
+      <ReviewForm id={id} />
     </NavLabel>
   )
 }
