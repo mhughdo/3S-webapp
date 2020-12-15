@@ -47,7 +47,6 @@ const Places = () => {
   useEffect(() => {
     if (!loading) {
       const { id } = session.full_info
-      debugger
       initData(id)
     }
   }, [loading])

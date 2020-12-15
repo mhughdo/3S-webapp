@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
 import Logo from '@assets/logo2.png';
-import { Box, Container, Image, Stack, Text } from '@chakra-ui/react';
+import { Box, Container, Image, Stack, Text, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import Link from 'next/link'
+import {useSession} from 'next-auth/client'
+import format from 'date-fns/format'
+import NextLink from 'next/link'
 
 const Header = () => {
   const activeLink = useRouter().pathname
+  const [session] = useSession()
 
   const ActiveBar = {
     booking: '/me/bookings',
@@ -24,18 +27,21 @@ const Header = () => {
           py={12}
         >
           <Box flex='1'>
-            <Link href='/'>
-              <Image src={Logo} width='60px' height='60px' />
-            </Link>
+            <NextLink href='/'>
+              <Link href='/'>
+                <Image src={Logo} width='60px' height='60px' />
+              </Link>
+            </NextLink>
+
           </Box>
           <Stack flex='1' direction='row-reverse' spacing={6}>
             <Box>
               <Text fontSize='sm' fontWeight='bold' color='#999' textTransform='uppercase'>Tài khoản của tôi</Text>
-              <Text fontSize='md' fontWeight='bolder' color='#333'>Vũ Đức</Text>
+              <Text fontSize='md' fontWeight='bolder' color='#333'>{session?.user?.name}</Text>
             </Box>
             <Box>
               <Text fontSize='sm' fontWeight='bold' color='#999' textTransform='uppercase'>Hôm nay</Text>
-              <Text fontSize='md' fontWeight='bolder' color='#333'>25/11/2020</Text>
+              <Text fontSize='md' fontWeight='bolder' color='#333'>{format(Date.now(), 'dd-MM-yyyy')}</Text>
             </Box>
           </Stack>
         </Box>

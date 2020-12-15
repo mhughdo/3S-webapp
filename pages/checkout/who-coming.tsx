@@ -36,7 +36,7 @@ import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import { NextPage } from 'next'
 import ErrorPage from '@components/ErrorPage'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from '@utils/axios'
 import { AxiosResponse } from 'axios/index'
 import { isValidDate } from 'utils/validation'
@@ -44,7 +44,7 @@ import differenceInDays from 'date-fns/differenceInDays'
 import { toDateString, dayOfWeek, calculateRoomPrice, formatPrice } from 'utils'
 import format from 'date-fns/format'
 import isEqual from 'date-fns/isEqual'
-import isAfter from 'date-fns/isAfter'
+import isBefore from 'date-fns/isBefore'
 import Marker from '../../assets/svg/marker.svg'
 
 const HR = chakra('hr')
@@ -64,11 +64,27 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
   const [couponLoading, setCouponLoading] = useState(false)
   const [bookingLoading, setBookingLoading] = useState(false)
   const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [isAllowed, setIsAllowed] = useState(true)
   const { query } = router
 
   const { guests, checkin, checkout, id }: { guests?: number; checkin?: string; checkout?: string; id?: string } = query
   const checkIn = new Date(checkin)
   const checkOut = new Date(checkout)
+
+  useEffect(() => {
+    console.log(placeData?.policy_attributes?.max_num_of_people)
+    if (placeData?.policy_attributes?.max_num_of_people < guests) {
+      toast({
+        title: 'Lỗi',
+        description: 'Số khách lớn hơn số lượng người tối đa của phòng!',
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      })
+      setIsAllowed(false)
+    }
+  }, [placeData?.policy_attributes?.max_num_of_people, guests, toast])
 
   if (
     !id ||
@@ -81,8 +97,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
     isEqual(checkIn, checkOut) ||
     !isValidDate(checkIn) ||
     !isValidDate(checkOut) ||
-    checkIn > checkOut ||
-    isAfter(checkIn, Date.now())
+    checkIn > checkOut
   ) {
     return <ErrorPage />
   }
@@ -443,7 +458,7 @@ const WhoComing: NextPage<{ isLoggedIn: boolean; session: any; placeData?: any; 
                         transition='all .3s'
                         color='white'
                         mt={6}
-                        disabled={!isLoggedIn || bookingLoading}
+                        disabled={!isLoggedIn || bookingLoading || !isAllowed}
                         _hover={{
                           backgroundPosition: '100%',
                           color: 'white',

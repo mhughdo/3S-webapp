@@ -182,6 +182,7 @@ const PlaceDetailsComponent = ({ placeId }) => {
                     roomData={placeData?.room_attributes}
                     details={placeData?.details}
                     placeType={placeData?.place_type}
+                    maxNumOfPeople={placeData?.policy_attributes?.max_num_of_people}
                   />
                   <Amenities listAmenties={placeData?.place_facilities_attributes} />
                   <Price price={placeData?.schedule_price_attributes} />
@@ -192,7 +193,11 @@ const PlaceDetailsComponent = ({ placeId }) => {
               </Box>
               <Box flex='1'>
                 <ShareAndLikeBtn id={placeId} />
-                <BookingForm id={placeId} price={placeData?.schedule_price_attributes} />
+                <BookingForm
+                  id={placeId}
+                  price={placeData?.schedule_price_attributes}
+                  maxNumOfPeople={placeData?.policy_attributes?.max_num_of_people}
+                />
               </Box>
             </Flex>
           </Box>

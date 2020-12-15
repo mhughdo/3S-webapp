@@ -12,7 +12,7 @@ type CouponType = {
   discount: number
 }[]
 
-const PlaceIntro = ({ name, address, roomData, details, placeType }) => {
+const PlaceIntro = ({ name, address, roomData, details, placeType, maxNumOfPeople }) => {
   const NavLabel = chakra(Element)
   const [truncated, setTruncated] = useState(true)
 
@@ -69,6 +69,7 @@ const PlaceIntro = ({ name, address, roomData, details, placeType }) => {
           <Text>Nguyên căn ·</Text>
           {roomData?.num_of_bedroom} phòng ngủ ·<Text>{roomData?.num_of_kitchen} phòng bếp ·</Text>
           {roomData?.num_of_bed} giường ·<Text>{roomData?.num_of_bathroom} phòng tắm</Text>
+          <Text>· Tối đa {maxNumOfPeople} người</Text>
         </Stack>
       </Box>
       <Box className='coupon-area' mt='18px'>

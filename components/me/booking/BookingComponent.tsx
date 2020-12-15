@@ -50,7 +50,6 @@ const BookingComponent = () => {
         method: 'get',
       })
       setDataSource(data.data)
-      debugger
     } catch (error) {
       toast({
         title: 'Có sự cố xảy ra',
