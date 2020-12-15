@@ -8,17 +8,18 @@ const ShareAndLikeBtn = ({ id }) => {
   const [bookmarked, setBookmarked] = useState(false)
 
   useEffect(() => {
-    axios
-      .post('/v1/bookmark/check', { place_id: id })
-      .then(({ data }) => {
-        console.log('data', data)
-        if (data) {
-          setBookmarked(data.data)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (id) {
+      axios
+        .post('/v1/bookmark/check', { place_id: id })
+        .then(({ data }) => {
+          if (data) {
+            setBookmarked(data.data)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }, [bookmarked, id])
 
   const toast = useToast()

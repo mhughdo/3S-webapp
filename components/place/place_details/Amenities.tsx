@@ -49,7 +49,7 @@ const Amenities = ({ listAmenties }) => {
         <Wrap align='center' color='#555' width='100%'>
           {listAmenties?.length &&
             listAmenties?.map((a: string) => (
-              <WrapItem alignItems='center' lineHeight='taller' mt={3} width='31.333%'>
+              <WrapItem alignItems='center' lineHeight='taller' mt={3} width='31.333%' key={a}>
                 {amentyIcons[`${a}`]}
                 <span style={{ marginLeft: '.875rem' }}>{amenties[`${a}`]}</span>
               </WrapItem>

@@ -26,8 +26,9 @@ const Reviews = ({ id }) => {
   const {
     isLoading,
     isError,
-    data: { data: reviews } = [] as any,
-  }: { isError: boolean; isLoading: boolean; data: { data: RatingType } } = useQuery(
+    refetch,
+    data: { data: reviews } = {} as any,
+  }: { isError: boolean; isLoading: boolean; data: { data: RatingType }; refetch: any } = useQuery(
     ['placeReviews', id],
     async () => {
       const { data } = await axios({
@@ -37,7 +38,7 @@ const Reviews = ({ id }) => {
 
       return data
     },
-    { enabled: id, retry: false }
+    { enabled: id, retry: false, refetchOnWindowFocus: false }
   )
 
   if (isError) {
@@ -60,7 +61,7 @@ const Reviews = ({ id }) => {
       </Box>
       {reviews?.length &&
         reviews?.map((r) => (
-          <Box className='single-review' my={8}>
+          <Box className='single-review' my={8} key={r.comment}>
             <Box display='flex' flexDirection='row'>
               <Avatar name='Dan Abrahmov' src={r.user_avatar} />
               <Box ml={2} display='flex' pt={1}>
@@ -70,8 +71,8 @@ const Reviews = ({ id }) => {
                   </Heading>
                 </Box>
                 <Box display='flex' marginLeft={3} color='#FFB500' pt={0.25}>
-                  {[...Array(r.score)].map(() => (
-                    <AiFillStar fontSize={24} />
+                  {[...Array(r.score)].map((_, idx) => (
+                    <AiFillStar fontSize={24} key={idx} />
                   ))}
                 </Box>
               </Box>
@@ -82,7 +83,7 @@ const Reviews = ({ id }) => {
           </Box>
         ))}
       <Divider />
-      <ReviewForm id={id} />
+      <ReviewForm id={id} refetch={refetch} />
     </NavLabel>
   )
 }

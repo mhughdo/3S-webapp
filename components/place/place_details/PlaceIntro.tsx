@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable camelcase */
 import { useState } from 'react'
-import { Avatar, Box, Button, chakra, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react'
+import { Avatar, Box, Button, chakra, Flex, Heading, Stack, Text } from '@chakra-ui/react'
 import { BiLocationPlus, BiBuildings } from 'react-icons/bi'
 import { Element } from 'react-scroll'
 import { useQuery } from 'react-query'
@@ -17,8 +17,6 @@ const PlaceIntro = ({ name, address, roomData, details, placeType }) => {
   const [truncated, setTruncated] = useState(true)
 
   const {
-    isLoading,
-    isError,
     data: { data: coupon } = [] as any,
   }: { isError: boolean; isLoading: boolean; data: { data: CouponType } } = useQuery(
     'getAllCoupon',
