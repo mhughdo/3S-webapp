@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Box, Heading, Wrap, WrapItem, Text, chakra } from '@chakra-ui/react'
-import { FaWifi, FaCarAlt, FaSwimmer, FaAirFreshener } from 'react-icons/fa'
+import {ElementType} from 'react'
 import { Element } from 'react-scroll'
 import MicrowaveIcon from '../../../assets/svg/microwave.svg'
 import WashingIcon from '../../../assets/svg/washingmachine.svg'
-import Wifi from '../../../assets/svg/wifi.svg'
 import Sofa from '../../../assets/svg/sofa.svg'
 import Fridge from '../../../assets/svg/fridge.svg'
 import Balcony from '../../../assets/svg/balcony.svg'
@@ -13,12 +12,11 @@ import Balcony from '../../../assets/svg/balcony.svg'
 const Amenities = ({ listAmenties }) => {
   const NavLabel = chakra(Element)
 
-  const MicroIcon = chakra(MicrowaveIcon)
-  const WashingIconCustom = chakra(WashingIcon)
-  const WifiIconCustom = chakra(Wifi)
-  const SofaIconCustom = chakra(Sofa)
-  const FridgeIconCustom = chakra(Fridge)
-  const BalconyIconCustom = chakra(Balcony)
+  const MicroIcon = chakra(MicrowaveIcon as ElementType<any>)
+  const WashingIconCustom = chakra(WashingIcon as ElementType<any>)
+  const SofaIconCustom = chakra(Sofa as ElementType<any>)
+  const FridgeIconCustom = chakra(Fridge as ElementType<any>)
+  const BalconyIconCustom = chakra(Balcony as ElementType<any>)
 
   const amenties = {
     'Fridge/ Freezer': 'Tủ lạnh',
