@@ -7,6 +7,7 @@ type SkeletonProps = { isLoading: true }
 
 type NoSkeletonProps = {
   isLoading?: false
+  placeId: number
   imageUrl: string
   name: string
   address: string

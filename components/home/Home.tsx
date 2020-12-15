@@ -23,11 +23,6 @@ import Vungtau from '@assets/top-destinations/vungtau.png'
 import Pro1 from '@assets/promotion/1.png'
 import Pro2 from '@assets/promotion/2.jpg'
 import Pro3 from '@assets/promotion/3.jpg'
-import Place1 from '@assets/places/1.jpg'
-import Place2 from '@assets/places/2.jpg'
-import Place3 from '@assets/places/3.jpg'
-import Place4 from '@assets/places/4.jpg'
-import Place5 from '@assets/places/5.png'
 import usePlacesByCityData from '@hooks/usePlacesByCityData'
 import TopDestinationBox from './TopDestinationBox'
 import ServiceBox from './ServiceBox'
@@ -233,38 +228,16 @@ const Home = () => {
             />
 
             <Slider infinite speed={500} slidesToShow={4} slidesToScroll={4}>
-              {data?.length
-                ? data.map((place) => (
-                    <PlaceBox
-                      key={place.id}
-                      placeId={place.id}
-                      imageUrl={place.image}
-                      name={place.name}
-                      address={place.address}
-                    />
-                  ))
-                : !isLoading &&
-                  !data?.length && (
-                    <>
-                      <PlaceBox
-                        name='AimeeHomestay#2 - Phan Bội Châu/ Self check-in'
-                        address='Cầu Giấy, Hà Nội'
-                        imageUrl={Place1}
-                      />
-                      <PlaceBox
-                        name='AimeeHomestay#5 - Phan Bội Châu /Self Check-in'
-                        address='Cầu Giấy, Hà Nội'
-                        imageUrl={Place2}
-                      />
-                      <PlaceBox name='ADODDA - Vinhome Greenbay' address='Cầu Giấy, Hà Nội' imageUrl={Place3} />
-                      <PlaceBox
-                        name='Hà Nội Home 1 - Nice house for you'
-                        address='Cầu Giấy, Hà Nội'
-                        imageUrl={Place4}
-                      />
-                      <PlaceBox name='Phòng Gốm - Vie De Maison' address='Cầu Giấy, Hà Nội' imageUrl={Place5} />
-                    </>
-                  )}
+              {data?.length &&
+                data.map((place) => (
+                  <PlaceBox
+                    key={place.id}
+                    placeId={place.id}
+                    imageUrl={place.image}
+                    name={place.name}
+                    address={place.address}
+                  />
+                ))}
               {isLoading &&
                 Array.from({ length: 4 }).map((_: any, index: number) => <PlaceBox key={index} isLoading />)}
             </Slider>
