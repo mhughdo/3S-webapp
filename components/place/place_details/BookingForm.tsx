@@ -9,6 +9,7 @@ import {
   NumberIncrementStepper,
   NumberInputStepper,
   NumberDecrementStepper,
+  useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -29,8 +30,9 @@ type BookedDate = {
   end_date: string
 }[]
 
-const BookingForm = ({ id, price }) => {
+const BookingForm = ({ id, price, maxNumOfPeople }) => {
   const router = useRouter()
+  const toast = useToast()
   const [formData, setFormData] = useState<FormDataType>({
     startDate: null,
     endDate: null,
@@ -60,6 +62,16 @@ const BookingForm = ({ id, price }) => {
   const parseVal = (val: string): number => parseInt(val.replace(/^\[a-z]/, ''))
 
   const handleSubmit = () => {
+    if (formData.numOfGuest > maxNumOfPeople) {
+      return toast({
+        title: 'Lỗi',
+        description: 'Số khách lớn hơn số lượng người tối đa của phòng!',
+        status: 'error',
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+      })
+    }
     console.log(formData)
     router.push({
       pathname: '/checkout/who-coming/',
