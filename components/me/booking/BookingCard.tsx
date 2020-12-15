@@ -1,6 +1,6 @@
-import { Box, GridItem, Grid, Button, Text, Link, Tag } from '@chakra-ui/react'
+import { Box, GridItem, Grid, Text, Link, Tag } from '@chakra-ui/react'
 
-const BookingCard = () => (
+const BookingCard = ({ data }) => (
   <Box
     className='card-booking'
     borderRadius='8px'
@@ -17,13 +17,13 @@ const BookingCard = () => (
     </Box>
     <Box display='flex'>
       <Box flex='1 30%'>
-        <Link href='#' style={{ textDecoration: 'none' }}>
+        <Link href={`/place/${data.id}`} style={{ textDecoration: 'none' }}>
           <Text sx={{ ':hover': { color: '#f65e39', transition: 'all .3s' } }} fontSize='24px' pr='20%'>
-            TeHouse-Private Bunk Bed Room
+            {data.place_name}
           </Text>
         </Link>
         <Box color='#666' mt={3}>
-          Phòng riêng
+          {data.place_type}
         </Box>
       </Box>
       <Box flex='1 1 45%' pl={10} borderLeft='1px solid #efefef' borderRight='1px solid #efefef'>
@@ -33,7 +33,7 @@ const BookingCard = () => (
               <Text fontSize='sm' color='#999' mb={2}>
                 Mã đặt chỗ
               </Text>
-              <Text>1</Text>
+              <Text>{data.id}</Text>
             </Box>
           </GridItem>
           <GridItem>
@@ -41,7 +41,7 @@ const BookingCard = () => (
               <Text fontSize='sm' color='#999' mb={2}>
                 Số khách
               </Text>
-              <Text>1</Text>
+              <Text>{data.num_of_guest}</Text>
             </Box>
           </GridItem>
           <GridItem>
@@ -49,23 +49,16 @@ const BookingCard = () => (
               <Text fontSize='sm' color='#999' mb={2}>
                 Ngày đến
               </Text>
-              <Text>20-11-2020</Text>
+              <Text>{data.checkin.split('T')[0]}</Text>
             </Box>
           </GridItem>
-          <GridItem>
-            <Box>
-              <Text fontSize='sm' color='#999' mb={2}>
-                Số đêm
-              </Text>
-              <Text>1</Text>
-            </Box>
-          </GridItem>
+          <GridItem />
           <GridItem>
             <Box>
               <Text fontSize='sm' color='#999' mb={2}>
                 Tổng tiền
               </Text>
-              <Text>448,000₫</Text>
+              <Text>{data.price}₫</Text>
             </Box>
           </GridItem>
           <GridItem>
@@ -73,15 +66,10 @@ const BookingCard = () => (
               <Text fontSize='sm' color='#999' mb={2}>
                 Ngày đi
               </Text>
-              <Text>21-11-2020</Text>
+              <Text>{data.checkout.split('T')[0]}</Text>
             </Box>
           </GridItem>
         </Grid>
-      </Box>
-      <Box flex='1 1 24%' display='flex' justifyContent='center' px={10}>
-        <Button mt={4} backgroundColor='#28ca6e' color='#fff' px={20} py={5}>
-          Đặt lại chỗ ở
-        </Button>
       </Box>
     </Box>
   </Box>

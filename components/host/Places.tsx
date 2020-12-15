@@ -5,8 +5,10 @@ import axios from '@utils/axios'
 import { useSession } from 'next-auth/client'
 import { useEffect, useState } from 'react'
 import { useToast, Image, Button } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 const Places = () => {
+  const router = useRouter()
   const toast = useToast()
   const [session, loading] = useSession()
   const [dataSource, setDataSource] = useState([])
@@ -77,19 +79,19 @@ const Places = () => {
       dataIndex: 'address',
       key: 'address',
     },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      render: () => (
-        <Button colorScheme='orange' size='sm'>
-          Xem
-        </Button>
-      ),
-    },
   ]
 
-  return <Table dataSource={dataSource} columns={columns} />
+  return (
+    <Table
+      dataSource={dataSource}
+      columns={columns}
+      onRow={(record) => ({
+        onDoubleClick: () => {
+          router.push(`/place/${record.id}`)
+        }, // double click row
+      })}
+    />
+  )
 }
 
 export default Places

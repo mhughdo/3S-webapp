@@ -44,7 +44,7 @@ const ProfileForm = () => {
   const initData = async (id: number) => {
     try {
       const { data } = await axios({
-        url: `v1/user/user/${id}`,
+        url: `/v1/user/user/${id}`,
         method: 'get',
       })
       if (data.birthday) {
