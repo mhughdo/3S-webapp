@@ -57,9 +57,9 @@ const BaseInformation = ({
           content=' Không gian lưu trú nơi các vị khách được sinh hoạt trong những ngôi nhà dân theo phong cách sống bản địa.'
         />
         <FormControl id='place_name' isRequired mb={5}>
-          <FormLabel>Tên chỗ nghỉ</FormLabel>
+          <FormLabel>Tên chỗ nghỉ (Ít nhất 6 ký tự)</FormLabel>
           <Input
-            placeholder='Tên chỗ nghỉ (Ít nhất 6 ký tự)'
+            placeholder='Tên chỗ nghỉ '
             value={placeName}
             onChange={(event) => {
               setPlaceName(event.target.value)

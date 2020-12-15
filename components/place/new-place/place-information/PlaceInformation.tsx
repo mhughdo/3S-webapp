@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/ban-types */
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Tag, Box } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import BaseInformation from './BaseInformation'
 import Position from './Position'
@@ -110,30 +111,54 @@ const PlaceInformation = ({
     syncData,
   ])
 
+  const Done = () => (
+    <div
+      style={{
+        width: '10px',
+        height: '10px',
+        backgroundColor: '#11ea11',
+        borderRadius: '50%',
+        marginLeft: '5px',
+      }}
+    />
+  )
+
+  const Require = () => (
+    <div
+      style={{
+        width: '10px',
+        height: '10px',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        marginLeft: '5px',
+      }}
+    />
+  )
+
   return (
     <Tabs isFitted isManual colorScheme='orange' mt={8} pb={10}>
       <TabList mb='1em'>
-        <Tab onClick={scrollToTop}>Thông tin cơ bản</Tab>
+        <Tab onClick={scrollToTop}>Thông tin cơ bản {!isCompleteBaseInfo ? <Require /> : <Done />}</Tab>
         <Tab onClick={scrollToTop} isDisabled={!isCompleteBaseInfo}>
-          Địa điểm
+          Địa điểm {!isCompletePosition ? <Require /> : <Done />}
         </Tab>
         <Tab onClick={scrollToTop} isDisabled={!(isCompleteBaseInfo && isCompletePosition)}>
-          Phòng
+          Phòng {!isCompleteRoom ? <Require /> : <Done />}
         </Tab>
         <Tab onClick={scrollToTop} isDisabled={!(isCompleteBaseInfo && isCompletePosition && isCompleteRoom)}>
-          Tiện nghi
+          Tiện nghi {!isCompleteFacility ? <Require /> : <Done />}
         </Tab>
         <Tab
           onClick={scrollToTop}
           isDisabled={!(isCompleteBaseInfo && isCompletePosition && isCompleteRoom && isCompleteFacility)}>
-          Nội quy chỗ nghỉ
+          Nội quy chỗ nghỉ {!isCompleteRule ? <Require /> : <Done />}
         </Tab>
         <Tab
           onClick={scrollToTop}
           isDisabled={
             !(isCompleteBaseInfo && isCompletePosition && isCompleteRoom && isCompleteFacility && isCompleteRule)
           }>
-          Giới thiệu
+          Giới thiệu {!isCompleteOverview ? <Require /> : <Done />}
         </Tab>
       </TabList>
       <TabPanels>
