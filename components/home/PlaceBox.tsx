@@ -31,7 +31,7 @@ function PlaceBox({
   return (
     <NextLink href={`/place/${placeId}`}>
       <Box w='328px' h='313px'>
-        <Link href='/homestay' textDecoration='none !important' _hover={{ color: 'orange.500' }}>
+        <Link href={`/place/${placeId}`} textDecoration='none !important' _hover={{ color: 'orange.500' }}>
           <Box maxW='95%'>
             {isLoading ? (
               <Skeleton width='311px' height='207px' />

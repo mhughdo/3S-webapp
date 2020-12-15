@@ -1,15 +1,17 @@
+/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 // @refresh reset
-import { Box, Avatar, Heading, Text, Textarea, Button, chakra, IconButton, useToast } from '@chakra-ui/react'
+import { Box, Avatar, Heading, Textarea, Button, useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { useSession } from 'next-auth/client'
 import axios from '@utils/axios'
+import { useMutation, queryCache } from 'react-query'
 
-const ReviewForm = ({ id }) => {
+const ReviewForm = ({ id, refetch }) => {
   const toast = useToast()
   const [score, setScore] = useState(0)
   const [comment, setComment] = useState('')
@@ -18,18 +20,25 @@ const ReviewForm = ({ id }) => {
   const [disable, setDisable] = useState(true)
   const [session, loading] = useSession()
 
-  useEffect(() => {
-    if (score > 0) {
-      setDisable(false)
-    }
-  }, [score])
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setCommentLoading(true)
-    axios
-      .post(`/v1/place/${id}/rating/new`, { score, comment })
-      .then(({ data }) => {
+  const [mutate] = useMutation(
+    async ({ score, comment }: any) => {
+      const { data } = await axios.post(`/v1/place/${id}/rating/new`, { score, comment })
+      return data
+    },
+    {
+      onError: (error) => {
+        console.log(error)
+        toast({
+          title: 'Đã có lỗi xảy ra',
+          description: 'Điểm số đánh giá phải lớn hơn 0',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        })
+      },
+      onSuccess: () => {
+        refetch()
         toast({
           title: 'Thành công',
           description: 'Đã thêm 1 bình luận thành công!',
@@ -42,18 +51,23 @@ const ReviewForm = ({ id }) => {
         setCommentSuccess(true)
         setScore(0)
         setComment('')
-      })
-      .catch((err) => {
-        toast({
-          title: 'Đã có lỗi xảy ra',
-          description: 'Điểm số đánh giá phải lớn hơn 0',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
-        console.log(err)
-      })
+      },
+    }
+  )
+
+  useEffect(() => {
+    if (score > 0) {
+      setDisable(false)
+    }
+  }, [score])
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setCommentLoading(true)
+    mutate({
+      score,
+      comment,
+    })
   }
 
   return (
@@ -68,7 +82,7 @@ const ReviewForm = ({ id }) => {
           </Box>
           <Box display='flex' marginLeft={3} color='#FFB500' pt={0.25}>
             {[1, 2, 3, 4, 5].map((value) => (
-              <Box fontSize='24px' key={value} onClick={() => setScore(value)}>
+              <Box key={value} fontSize='24px' onClick={() => setScore(value)}>
                 {score < value ? <AiOutlineStar /> : <AiFillStar />}
               </Box>
             ))}

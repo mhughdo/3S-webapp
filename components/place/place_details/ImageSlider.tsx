@@ -18,7 +18,7 @@ const ImageSlider = ({ slide }) => {
     <Box width='100%'>
       <Silder {...settings}>
         {slide?.map((s: { image: string }) => (
-          <Box>
+          <Box key={s.image}>
             <Image height='400px' width='100%' fallbackSrc='https://www.luxstay.com/loading-img.svg' src={s.image} />
           </Box>
         ))}

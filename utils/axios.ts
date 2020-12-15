@@ -24,7 +24,7 @@ instance.interceptors.response.use(
     const code = error && error.response ? error.response.status : 0
     if (code === 401) {
       if (typeof window !== 'undefined') {
-        Router.push('/login')
+        Router.push('/signin')
         signOut()
         console.log('Logged out')
       }
